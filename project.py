@@ -135,7 +135,9 @@ def main():
     # for debugging, save list_png images to file
     for i in range(len(list_png)):
         im_to_save = list_png[i]
-        im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
+        # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
+        filepath = f"{output_filepath}/test_image_page_{i}.png"
+        cv2.imwrite(filepath, im_to_save)
         
     ...
 
@@ -200,13 +202,23 @@ def pdf_images(file):
         np_array = np_array.reshape(picture.h, picture.w, picture.n)
         
         # converting RGB to BGR format
-        #np_image = np.ascontiguousarray(np_array[...,[2, 1, 0]])
         openCV_format = cv2.cvtColor(np_array, cv2.COLOR_RGB2BGR)
         
+        ## resizing the image, so later cv2 qr code recognition runs faster
         
-        #page_image = Image.fromarray(np_image)
         
-        images.append(openCV_format) # adding the image to the list
+        # determine scaling factor to resize image by 
+        # desired final image width
+        desired_width = 600
+        
+        # producing dsize tuple, to find new dimensions
+        current_width = openCV_format.shape[1]
+        scaling_factor = current_width / desired_width
+        dsize = (600, int(openCV_format.shape[0]/scaling_factor)) 
+        
+        # resize image        
+        output_openCV = cv2.resize(openCV_format, dsize, interpolation= cv2.INTER_AREA)
+        images.append(output_openCV) # adding the image to the list
         
     # Return list of generated images
     return images
