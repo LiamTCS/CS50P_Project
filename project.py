@@ -100,9 +100,13 @@ def main():
     
     # temp constant, will eventually check first page of pdf, then use that
     
+    temp_user_file = "CS50P_Project/two_qr_types_test_doc.pdf"
+    
+    #TODO figuring out how to properly read pdfs
     
     user_file = input("Enter PDF filename:\n")
-    open_pdf = open(user_file)
+    print(f"User enterred: {user_file}\n This is a temporary debug action")
+    open_pdf = open(temp_user_file)
     
     # convert pdf file to list of png images
     list_png = pdf_images(open_pdf)
