@@ -102,7 +102,7 @@ def main():
     
     temp_user_file = "CS50P_Project/two_qr_types_test_doc.pdf"
     
-    #TODO figuring out how to properly read pdfs
+    #TODO figuring out how to properly read pdfs. Maybe just convert pdf from file not from bytes
     
     user_file = input("Enter PDF filename:\n")
     print(f"User enterred: {user_file}\n This is a temporary debug action")
