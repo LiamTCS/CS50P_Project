@@ -7,7 +7,10 @@ from fpdf import FPDF
 import cv2
 
 # for converting pdf to images
-from pdf2image import convert_from_path, convert_from_bytes
+#'from pdf2image import convert_from_path, convert_from_bytes
+
+# fitz is what PyMuPDF is called, for backwards compatibility reasons
+import fitz
 
 # import numpy as np
 # import cv2 as cv
@@ -100,16 +103,16 @@ def main():
     
     # temp constant, will eventually check first page of pdf, then use that
     
-    temp_user_file = "CS50P_Project/two_qr_types_test_doc.pdf"
+    temp_user_file = "two_qr_types_test_doc.pdf"
     
     #TODO figuring out how to properly read pdfs. Maybe just convert pdf from file not from bytes
     
     user_file = input("Enter PDF filename:\n")
     print(f"User enterred: {user_file}\n This is a temporary debug action")
-    open_pdf = open(temp_user_file)
+    # open_pdf = open(temp_user_file)
     
     # convert pdf file to list of png images
-    list_png = pdf_images(open_pdf)
+    list_png = pdf_images(temp_user_file)
     
     # check each image to see if it contains the QR code
 
@@ -133,11 +136,11 @@ def main():
 #     ...
 
 
-def QR_location(pdf, QR_sep):
-    """
-    This function is given the scanned document, and the QR code seperator to look for
-    """
-    ...
+# def QR_location(pdf, QR_sep):
+#     """
+#     This function is given the scanned document, and the QR code seperator to look for
+#     """
+#     ...
 
 
 
@@ -151,11 +154,30 @@ def pdf_images(file):
         list: Returns a list of PNG images with a maximum width of 500 px
     """
 
-    return convert_from_bytes(file, fmt="png", size=(500, None))
+    #return convert_from_path(file, fmt="png", size=(500, None))
 
-    # This function is given the scanned document
-    # it uses the pdf2image library, but is included as a seperate function because there may be some future additional features added to it
-
+    # Using pdf2image required external dependencies that I could not use
+    # Using the PyMuPDF library instead
+    
+    file_path = file
+    dpi = 300
+    zoom = dpi/72
+    magnify = fitz.Matrix(zoom, zoom) # resizes image, to be more consistent
+    
+    # open document
+    doc = fitz.open(file_path)
+    
+    # initialising a list to contain the generated images
+    images = []
+    
+    # loop through each page, generating an image for each
+    for page in doc:
+        picture = page.get_pixmap(matrix=magnify) # rendering page to an image
+        images.append(picture) # adding the image to the list
+        
+    # Return list of generated images
+    return images
+    
 
 def QR_code_present(image, qr_data):
     """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
