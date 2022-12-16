@@ -11,6 +11,11 @@ import cv2
 
 # fitz is what PyMuPDF is called, for backwards compatibility reasons
 import fitz
+import numpy as np
+
+from PIL import Image
+import PIL
+
 
 # import numpy as np
 # import cv2 as cv
@@ -103,12 +108,16 @@ def main():
     
     # temp constant, will eventually check first page of pdf, then use that
     
-    temp_user_file = "two_qr_types_test_doc.pdf"
+    #temp_user_file = "two_qr_types_test_doc.pdf"
+    
+    temp_user_file = "/home/liams/python/CS50P_Project/two_qr_types_test_doc.pdf"
     
     #TODO figuring out how to properly read pdfs. Maybe just convert pdf from file not from bytes
     
-    user_file = input("Enter PDF filename:\n")
-    print(f"User enterred: {user_file}\n This is a temporary debug action")
+    # user_file = input("Enter PDF filename:\n")
+    # print(f"User enterred: {user_file}\n This is a temporary debug action")
+    
+    
     # open_pdf = open(temp_user_file)
     
     # convert pdf file to list of png images
@@ -116,6 +125,18 @@ def main():
     
     # check each image to see if it contains the QR code
 
+#
+# list_png[0]
+
+
+    # output folder abs path
+    output_filepath = "/home/liams/python/CS50P_Project/Output"
+
+    # for debugging, save list_png images to file
+    for i in range(len(list_png)):
+        im_to_save = list_png[i]
+        im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
+        
     ...
 
 
@@ -145,13 +166,13 @@ def main():
 
 
 def pdf_images(file):
-    """this function is given an opened pdf file, and returns a list, containing PNG images with a maximum width of 500 px
+    """this function is given an opened pdf file, and returns a list containing the converted images
 
     Args:
-        file (PDF Object): an Open PDF object, that has been read from disk somewhere else in the program
+        file (string): The location of the pdf file to be converted to a list of images
 
     Returns:
-        list: Returns a list of PNG images with a maximum width of 500 px
+        list: Returns a list of images
     """
 
     #return convert_from_path(file, fmt="png", size=(500, None))
@@ -173,11 +194,30 @@ def pdf_images(file):
     # loop through each page, generating an image for each
     for page in doc:
         picture = page.get_pixmap(matrix=magnify) # rendering page to an image
-        images.append(picture) # adding the image to the list
+        
+        # converting the pixmap to an image in BGR format (what openCV wants)
+        np_array = np.frombuffer(picture.samples, dtype=np.uint8)
+        np_array = np_array.reshape(picture.h, picture.w, picture.n)
+        
+        # converting RGB to BGR format
+        #np_image = np.ascontiguousarray(np_array[...,[2, 1, 0]])
+        openCV_format = cv2.cvtColor(np_array, cv2.COLOR_RGB2BGR)
+        
+        
+        #page_image = Image.fromarray(np_image)
+        
+        images.append(openCV_format) # adding the image to the list
         
     # Return list of generated images
     return images
     
+
+
+
+
+
+
+
 
 def QR_code_present(image, qr_data):
     """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
