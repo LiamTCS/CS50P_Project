@@ -1,0 +1,4 @@
+# All pip - installable libraries that your project requires should be listed here, line by line. Delete this text once filled out. Will interfer with the assignment marking system
+
+fpdf2
+qrcode
