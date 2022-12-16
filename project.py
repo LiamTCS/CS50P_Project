@@ -90,9 +90,24 @@ def main():
     # # Split the scanned document based on the QR code positions
 
     # test bit
-    qr_data = input("Enter QR data, blank for default: ")
-    pdf = QR_pages(qr_data, 5)
-    pdf.save_pages("Qr_output.pdf")
+    # qr_data = input("Enter QR data, blank for default: ")
+    # pdf = QR_pages(qr_data, 5)
+    # pdf.save_pages("Qr_output.pdf")
+
+
+
+    # The actual program below
+    
+    # temp constant, will eventually check first page of pdf, then use that
+    
+    
+    user_file = input("Enter PDF filename:\n")
+    open_pdf = open(user_file)
+    
+    # convert pdf file to list of png images
+    list_png = pdf_images(open_pdf)
+    
+    # check each image to see if it contains the QR code
 
     ...
 
@@ -150,16 +165,15 @@ def QR_code_present(image, qr_data):
     """
 
     # Creating an object of class QRCodeDetector and calling detectAndDecode on it
-
     QRCodeDetector = cv2.QRCodeDetector()
     decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
 
     # check if a qr code was found within the image
-
     if points is not None:
         # A QR code was found within the image
+        
         # check if the expected qr_data was found in a QR code
-
+        # This is done to ensure that not every QR code acts as a document splitter, only the desired one
         if qr_data in decodedText:
             return True
         else:
