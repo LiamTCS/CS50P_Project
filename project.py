@@ -126,8 +126,7 @@ def remove_adjacent_QR():
     # is scanning double sided, there will always be two seperator pages in sequence, this removes one of those and saves the pdf
     ...
 
-
-def pdf_split(pdf, qr_positions):
+    # def pdf_split(pdf, qr_positions):
     """
     This function is passed the scanned pdf document, and a list containing the page numbers of the seperator pages.
 
@@ -135,8 +134,7 @@ def pdf_split(pdf, qr_positions):
     """
     ...
 
-
-def save_pdfs():
+    # def save_pdfs():
     # save the split pdfs using default values, or if provided, user provided prefix/suffix options
 
     # default options
@@ -152,8 +150,7 @@ def save_pdfs():
 
     ...
 
-
-def generate_QR_sep(user_sep, quantity=1):
+    # def generate_QR_sep(user_sep, quantity=1):
     """
     # this program produces a pdf containing a QR code, used as a seperator page
 
@@ -213,7 +210,6 @@ def generate_QR_sep(user_sep, quantity=1):
     ...
 
 
-
 def pdf_images(file):
     """this function is given an opened pdf file, and returns a list, containing PNG images with a maximum width of 500 px
 
@@ -221,16 +217,13 @@ def pdf_images(file):
         file (PDF Object): an Open PDF object, that has been read from disk somewhere else in the program
 
     Returns:
-        list: Returns a list of PNG images with a maximum width of 500 px 
-    """    
-    
+        list: Returns a list of PNG images with a maximum width of 500 px
+    """
+
     return convert_from_bytes(file, fmt="png", size=(500, None))
-    
-    
-    #This function is given the scanned document 
-    #it uses the pdf2image library, but is included as a seperate function because there may be some future additional features added to it
-    
-    
+
+    # This function is given the scanned document
+    # it uses the pdf2image library, but is included as a seperate function because there may be some future additional features added to it
 
 
 def QR_code_present(image, qr_data):
@@ -262,6 +255,7 @@ def QR_code_present(image, qr_data):
     else:
         # No QR code was found within the image
         return False
+
 
 if __name__ == "__main__":
     main()

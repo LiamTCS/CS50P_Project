@@ -2,10 +2,11 @@
 
 
 import cv2
-#from cv2 import *
-#import numpy as np
 
-#from matplotlib import pyplot as plt
+# from cv2 import *
+# import numpy as np
+
+# from matplotlib import pyplot as plt
 
 
 def qr_code_match(image, qr_data):
