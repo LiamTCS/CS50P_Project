@@ -97,21 +97,21 @@ def main():
     ...
 
 
-def identify_seperator():
-    # this function looks at the first page of the scan and identifies any QR codes on the page.
-    # if there are no QR codes, then return the default seperator QR code value
-    # if there are two QR codes, and one matches the default seperator QR code, then return the other QR code
-    ...
+# def identify_seperator():
+#     # this function looks at the first page of the scan and identifies any QR codes on the page.
+#     # if there are no QR codes, then return the default seperator QR code value
+#     # if there are two QR codes, and one matches the default seperator QR code, then return the other QR code
+#     ...
 
 
-def user_interface():
-    # This function handles the user interface, and returns the user options to main
-    ...
+# def user_interface():
+#     # This function handles the user interface, and returns the user options to main
+#     ...
 
 
-def job_progress():
-    # this function displays the job progress in the terminal as a progress bar, and if possible gives information about the current task
-    ...
+# def job_progress():
+#     # this function displays the job progress in the terminal as a progress bar, and if possible gives information about the current task
+#     ...
 
 
 def QR_location(pdf, QR_sep):
@@ -120,94 +120,6 @@ def QR_location(pdf, QR_sep):
     """
     ...
 
-
-def remove_adjacent_QR():
-    # if there are multiple seperator pages next to each other, removed all but one page
-    # is scanning double sided, there will always be two seperator pages in sequence, this removes one of those and saves the pdf
-    ...
-
-    # def pdf_split(pdf, qr_positions):
-    """
-    This function is passed the scanned pdf document, and a list containing the page numbers of the seperator pages.
-
-    It then splits the pdf into seperate pdfs, saving them into a list of objects, based on the location of the seperator pages
-    """
-    ...
-
-    # def save_pdfs():
-    # save the split pdfs using default values, or if provided, user provided prefix/suffix options
-
-    # default options
-    #   prefix = Original file name (no file extension)
-    #   suffix = appended, incrementing number
-    #
-    # For example, if the scanned document, "Example.pdf" contained three seperator pages it would produce three documents
-    # Example_01.pdf, Example_02.pdf, Example_03.pdf
-
-    # The user options are:
-    # Prefix: Any string containing only letters/numbers, no punctuation
-    # Suffix: option of either incrementing numbers or letters. (1, 2, 3 or a, b, c)
-
-    ...
-
-    # def generate_QR_sep(user_sep, quantity=1):
-    """
-    # this program produces a pdf containing a QR code, used as a seperator page
-
-    # If the user is using the default seperator QR code, and hasn't given a number of seperator pages to print then by default this function produces a 2 page pdf containing the default QR code.
-
-    # if the user does use a non-default QR code value then it also produces a start pdf, which contains:
-    # Two QR codes, centered vertically, orientated around the vertical axis. One QR code is the default QR seperator, and the other is the custom one that the user provided
-    # This page is repeated, to allow for double sided scanning
-
-    # Default QR code seperator data
-    default_sep = "Default_Seperator"
-
-    # File name of QR code
-    QR_filename = "default_sep.png"
-
-    # generate the QR code
-    QR_code_default = qrcode.make(default_sep)
-
-    # # save image to a file
-    # QR_code.save(QR_filename)
-
-
-    # if user has enterred custom seperator data, then produce the start page as well
-
-    if user_sep not "":
-        # if the user has given a data value, thats not empty
-        QR_user_sep_filename = "user_sep.png"
-
-        # generating the user specified QR code
-        QR_code_user = qrcode.make(user_sep)
-        ...
-
-        # produce a pdf with the following components
-        # a start page, with 2 QR codes, both centered  vertically, along the horizontal axis
-        # one QR code is the default, the other is QR_code_user
-
-        # after
-
-
-
-    else:
-        # if default QR code used
-        # produce a 2 page pdf, both pages the same
-        # wih QR_code_default centered both vertically and horizontally
-
-        # this set of two pages is repeated "quantity" times, default value is 1
-
-
-
-
-
-
-    """
-
-    # Each page contains a QR code, centred both horizontally and vertically.
-
-    ...
 
 
 def pdf_images(file):
