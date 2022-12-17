@@ -85,8 +85,11 @@ def main():
 
     # temp_user_file = "two_qr_types_test_doc.pdf"
 
-    temp_user_file = "/home/liams/python/CS50P_Project/two_qr_types_test_doc.pdf"
-
+    test_file_desktop = "/home/liams/python/CS50P_Project/two_qr_types_test_doc.pdf"
+    test_file_laptop = "/home/liams/CS50P_Project/TEST PDF Scans/test scan to test.pdf"
+    
+    
+    temp_user_file = test_file_laptop
     # user_file = input("Enter PDF filename:\n")
     # print(f"User enterred: {user_file}\n This is a temporary debug action")
 
