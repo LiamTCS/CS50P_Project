@@ -125,6 +125,27 @@ def save_list_png(list_png, output_filepath):
         cv2.imwrite(filepath, im_to_save)
 
 
+def determine_document_locations(sep_location):
+    
+    # This function is passed a list containing boolean values indicating whether or not the corresponding page number of the document is a QR code seperator page or not. 
+    # As an example, given the following:
+    # [True, True, False, False, False, True, False]
+    # this function would return:
+    # [0, 0, 1, 1, 1, 0, 2]
+    # The "1's" indicate that these pages will be in seperated document number 1, the 2 indicates it will be in document 2. O's indicate seperator pages, and as such wont be output
+    
+    # doc_num is used to track which document each page will be in at the end
+    doc_num = 1
+    
+    # loop through entire sep_location list
+    for i in range(len(sep_location)):
+        if sep_location[i]:
+            # if page i contains a seperator QR code, doc_local[i] == 0
+            
+        else:
+            
+
+
 def Determine_QR_Sep_location(list_png):
     """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
 
