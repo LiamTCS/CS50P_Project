@@ -134,15 +134,24 @@ def determine_document_locations(sep_location):
     # [0, 0, 1, 1, 1, 0, 2]
     # The "1's" indicate that these pages will be in seperated document number 1, the 2 indicates it will be in document 2. O's indicate seperator pages, and as such wont be output
     
+    
+    # check to ensure a seperator page is present
+    if True not in sep_location:
+        # if no seperator pages found
+        raise ValueError("The Pdf contains no QR code seperator pages")
+    
+    
+    
+    
     # doc_num is used to track which document each page will be in at the end
     doc_num = 1
     
-    # loop through entire sep_location list
-    for i in range(len(sep_location)):
-        if sep_location[i]:
-            # if page i contains a seperator QR code, doc_local[i] == 0
+    # # loop through entire sep_location list
+    # for i in range(len(sep_location)):
+    #     if sep_location[i]:
+    #         # if page i contains a seperator QR code, doc_local[i] == 0
             
-        else:
+    #     else:
             
 
 
