@@ -3,6 +3,10 @@ import qrcode
 from fpdf import FPDF
 
 
+# for regex
+import re
+
+
 # for identifying QR codes and decoding them
 import cv2
 
@@ -114,7 +118,22 @@ def main():
     print("################################")
     print(f"Each page is the seperator page Yes/No: \n{sep_page_location}")
 
-    ...
+
+
+    # for debug/dev
+    out_string = ""
+    for i in range(len(sep_page_location)):
+        bool_value = sep_page_location[i]
+        if bool_value:
+            out_string += "1"
+        else:
+            out_string += "0"
+        
+
+    print(f"sep_page_location as binary string:\n{out_string}")
+    
+    
+    
 
 
 def save_list_png(list_png, output_filepath):
@@ -141,6 +160,7 @@ def determine_document_locations(sep_location):
         raise ValueError("The Pdf contains no QR code seperator pages")
     
     
+    # can have any number of documents, although must be less than doc.length
     
     
     # doc_num is used to track which document each page will be in at the end
@@ -153,6 +173,11 @@ def determine_document_locations(sep_location):
             
     #     else:
             
+    # TODO Steps
+    # 1. find document start. for doc #1 this either means the first non qr page from begining or the first page
+    # 2. find end of sub doc. search for pattern doc_page, qr
+    
+    
 
 
 def Determine_QR_Sep_location(list_png):
