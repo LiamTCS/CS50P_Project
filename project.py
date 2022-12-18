@@ -161,17 +161,9 @@ def determine_document_locations(sep_location):
     
     
     # can have any number of documents, although must be less than doc.length
-    
-    
-    # doc_num is used to track which document each page will be in at the end
-    doc_num = 1
-    
-    # # loop through entire sep_location list
-    # for i in range(len(sep_location)):
-    #     if sep_location[i]:
-    #         # if page i contains a seperator QR code, doc_local[i] == 0
-            
-    #     else:
+
+    # tuples can be used to determine which page ranges are going to make up a given doc, see
+    # regex_testing.py, for a working implementation!
             
     # TODO Steps
     # 1. find document start. for doc #1 this either means the first non qr page from begining or the first page
