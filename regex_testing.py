@@ -8,7 +8,7 @@ sep_pos_string = "11000000001000"
 # desired output, tuples containing 
 
 
-
+# This is working, definently use this
 
 def main():
     
