@@ -177,7 +177,9 @@ def pdf_2_image_list(file):
         dsize = (600, int(openCV_format.shape[0] / scaling_factor))
 
         # resize the image, and append it to the images list
-        images.append(cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA))  # adding the image to the list
+        images.append(
+            cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
+        )  # adding the image to the list
 
         print(f"{page} converted to image, added to list")
 
@@ -236,7 +238,7 @@ def sub_doc_pos(sep_page_pos):
 
     # initialising tuple list, to store the tuples describing the sub doc positions
     tuple_list = []
-    
+
     # The information stored in doc_tuples contains more than what is needed, to make working with this information more affective, a new list containing just the start and end positions was created
     for i in range(len(doc_tuples)):
         tuple_list.append(doc_tuples[i - 1].span())
@@ -253,13 +255,20 @@ def pdf_split(pdf_path, output, doc_tuples):
     print(f"output file\n{output}")
     print(f"sub doc tuples\n{doc_tuples}")
 
+    # Open the pdf to be split as a PyMuPDF document
     doc_src = fitz.open(pdf_path)
 
     for i in range(len(doc_tuples)):
+        # extract start/end position from the list of tuples
         start_page, end_page = doc_tuples[i]
 
+        # create a new blank document
         sub_doc = fitz.open()
+
+        # insert a given range of pages from a given pdf document, doc_src
         sub_doc.insert_pdf(doc_src, from_page=start_page, to_page=end_page, start_at=-1)
+
+        # save the new sub document as a new file, using the output filename provided by user
         sub_doc.save(f"{output}_{i}.pdf")
 
     # temp return for debugging
