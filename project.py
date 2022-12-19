@@ -107,7 +107,7 @@ def main():
 
 def user_input():
     test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/test scan to test.pdf"
-    test_output = ""
+    test_output = "Output/Trial_output"
 
     pdf_file = input("Enter PDF Filename:\n")
 
@@ -115,6 +115,7 @@ def user_input():
 
     # for testing purposes
     pdf_file = test_pdf
+    output_filename = test_output
 
     # ensures that there will be an output filename
     if output_filename == "":
@@ -257,12 +258,15 @@ def pdf_split(pdf_path, output, doc_tuples):
     doc_src = fitz.open(pdf_path)
     
     for i in range(len(doc_tuples)):
-        start_page, end_page = doc_tuples[i].span()
+        start_page, end_page = doc_tuples[i]
         
         sub_doc = fitz.open()
-        sub_doc.insertPDF(doc_src, from_page=start_page, to_page=end_page, start_at=1)    
-        sub_doc.save(f"{output}_{i}")
+        sub_doc.insert_pdf(doc_src, from_page=start_page, to_page=end_page, start_at=-1)    
+        sub_doc.save(f"{output}_{i}.pdf")
     
+    
+    # temp return for debugging
+    return True
     
 
 
