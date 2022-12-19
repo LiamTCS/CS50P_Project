@@ -86,6 +86,8 @@ class QR_pages:
 
 
 def main():
+    # add handling to allow argv's to provide user input
+
 
     # getting user input
     pdf_path, output_path = user_input()
@@ -99,7 +101,8 @@ def main():
     # determine where each sub document starts and ends
     sub_doc_tuples = sub_doc_pos(sep_pos)
 
-    pdf_split(pdf_path, output_path, sub_doc_tuples)
+    # returns a bool True or False, for debug purposes
+    split_success = pdf_split(pdf_path, output_path, sub_doc_tuples)
 
 
 def user_input():
@@ -145,6 +148,12 @@ def pdf_image_list(file):
     # open document
     doc = fitz.open(file_path)
 
+
+    # adding code to handle progress bars
+    print("Converting pdf to images")
+
+
+
     # initialising a list to contain the generated images
     images = []
 
@@ -173,6 +182,7 @@ def pdf_image_list(file):
         # resize image
         output_openCV = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
         images.append(output_openCV)  # adding the image to the list
+        print(f"page {page} converted to image, added to list")
 
     # Return list of generated images
     return images
@@ -217,10 +227,16 @@ def sub_doc_pos(sep_page_pos):
 
     # use re to determine where each document will start and end
 
-    doc_list = tuple(re.finditer(r"[0]+", binary_string))
-    print(doc_list)
+    doc_tuples = tuple(re.finditer(r"[0]+", binary_string))
+    
+    # initialising tuple list, to store the tuples describing the sub doc positions
+    tuple_list = []
+    for i in range(len(doc_tuples)):
+        tuple_list.append(doc_tuples[i-1].span())
+        
+    # implement a method to reverse tuple_list 
 
-    return doc_list
+    return tuple_list
 
 
 def pdf_split(pdf_path, output, doc_tuples):
@@ -232,12 +248,7 @@ def pdf_split(pdf_path, output, doc_tuples):
     ...
 
 
-def save_list_png(list_png, output_filepath):
-    for i in range(len(list_png)):
-        im_to_save = list_png[i]
-        # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
-        filepath = f"{output_filepath}/test_image_page_{i}.png"
-        cv2.imwrite(filepath, im_to_save)
+
 
 
 def QR_data(image):
@@ -289,6 +300,15 @@ def QR_code_present(image, qr_data):
     else:
         # No QR code was found within the image
         return False
+
+
+def save_list_png(list_png, output_filepath):
+    for i in range(len(list_png)):
+        im_to_save = list_png[i]
+        # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
+        filepath = f"{output_filepath}/test_image_page_{i}.png"
+        cv2.imwrite(filepath, im_to_save)
+
 
 
 if __name__ == "__main__":
