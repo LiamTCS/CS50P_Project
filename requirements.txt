@@ -2,3 +2,8 @@
 
 fpdf2
 qrcode
+PyMuPDF
+re
+opencv-python-headless
+numpy
+Pillow
