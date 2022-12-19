@@ -22,8 +22,23 @@ The program will also have the ability to produce a PDF file of the seperator pa
 While testing the QR_seperator_present function I found that the time it takes to perform the opencv QR code recognition on an image is correlated very strongly with the images resolution. 
 To further explore the issue I carried out a few tests, the results of which can be seen in the table below.
 
-Size Name|Image Size (px) | Average Run Completion (s)
-Original|2550x3300 |  1.846 
-Large|1080x1398| 0.296
-Medium|768x994|
-Small|480x621|0.076
+|Size Name|Image Size (px) | Average Run Completion (s)|
+|Original|2550x3300 |1.846|
+|Large|1080x1398|0.296|
+|Medium|768x994|0.169|
+|Small|480x621|0.076|
+
+Size Name	Image Size (px) 	 Average Run Completion (s)
+Original	2550x3300 	1.846
+Large	1080x1398	0.296
+Medium	768x994	0.169
+Small	480x621	0.076
+
+
+
+Size Name	height (px)	width (px)	Avg Time (s)	Total (Mpx)	Mpx/s
+Original	2550	3300	1.846	8.415	4.56
+Large	1080	1398	0.296	1.50984	5.10
+Medium	768	994	0.169	0.763392	4.52
+Small	480	621	0.076	0.29808	3.92
+
