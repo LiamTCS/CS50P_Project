@@ -231,8 +231,7 @@ def sub_doc_pos(sep_page_pos):
         else:
             binary_string += "0"
 
-    # use re to determine where each document will start and end
-
+    # regex is then used to find a set of tuples, each containing the start and end position of each sub document
     doc_tuples = tuple(re.finditer(r"[0]+", binary_string))
 
     # initialising tuple list, to store the tuples describing the sub doc positions
