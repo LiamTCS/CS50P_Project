@@ -86,20 +86,19 @@ class QR_pages:
 
 
 def main():
-    
 
     # getting user input
     pdf_path, output_path = user_input()
-    
+
     # producing a list containing images of each pdf page
     doc_images = pdf_image_list(pdf_path)
-    
+
     # determine if the seperator qr code is present in each image from the list
     sep_pos = QR_sep_present(doc_images)
-    
+
     # determine where each sub document starts and ends
     sub_doc_tuples = sub_doc_pos(sep_pos)
-    
+
     pdf_split(pdf_path, output_path, sub_doc_tuples)
 
 
@@ -107,14 +106,12 @@ def user_input():
     test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/test scan to test.pdf"
     test_output = ""
 
-
     pdf_file = input("Enter PDF Filename:\n")
 
     output_filename = input("Desired output filename:\n")
 
     # for testing purposes
     pdf_file = test_pdf
-
 
     # ensures that there will be an output filename
     if output_filename == "":
@@ -206,11 +203,9 @@ def QR_sep_present(list_png):
     return sep_page_location
 
 
-
-
 def sub_doc_pos(sep_page_pos):
-    # this function is given a boolean list, typically produced by QR_sep_present, and returns a list containing tuples, indicating the start and end positions of any number of sub documents that the input pdf will be split into 
-    
+    # this function is given a boolean list, typically produced by QR_sep_present, and returns a list containing tuples, indicating the start and end positions of any number of sub documents that the input pdf will be split into
+
     # converting the boolean list into a binary string
     binary_string = ""
     for i in range(len(sep_page_pos)):
@@ -219,20 +214,21 @@ def sub_doc_pos(sep_page_pos):
             binary_string += "1"
         else:
             binary_string += "0"
-            
+
     # use re to determine where each document will start and end
-    
+
     doc_list = tuple(re.finditer(r"[0]+", binary_string))
     print(doc_list)
-    
+
     return doc_list
-    
+
+
 def pdf_split(pdf_path, output, doc_tuples):
     # to implement, for now, just outputs each variable
     print(f"pdf filepath\n{pdf_path}")
     print(f"output file\n{output}")
     print(f"sub doc tuples\n{doc_tuples}")
-    
+
     ...
 
 
