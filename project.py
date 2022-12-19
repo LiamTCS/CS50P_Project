@@ -88,7 +88,6 @@ class QR_pages:
 def main():
     # add handling to allow argv's to provide user input
 
-
     # getting user input
     pdf_path, output_path = user_input()
 
@@ -149,11 +148,8 @@ def pdf_2_image_list(file):
     # open document
     doc = fitz.open(file_path)
 
-
     # adding code to handle progress bars
     print("Converting pdf to images")
-
-
 
     # initialising a list to contain the generated images
     images = []
@@ -183,19 +179,19 @@ def pdf_2_image_list(file):
         # resize image
         output_openCV = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
         images.append(output_openCV)  # adding the image to the list
-        
-        
-        
+
         print(f"{page} converted to image, added to list")
 
     # Return list of generated images
     return images
 
+
 def progress_bar(num, den):
     # implement a terminal progress bar that is passed a numerator/denominator, and ouputs a progress bar showing the percentage of task completion
-    perc = num/den
-    
+    perc = num / den
+
     ...
+
 
 def QR_seperator_present(list_png):
     """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
@@ -206,7 +202,7 @@ def QR_seperator_present(list_png):
     Returns:
         Boolean list: a list of boolean values, indicating the presence of the seperator qr code on each page
     """
-    
+
     # TODO needs to be improved, so that a qr page is not required for the first page, only if using a custom one
 
     sep_string = QR_data(list_png[0])
@@ -239,12 +235,12 @@ def sub_doc_pos(sep_page_pos):
     # use re to determine where each document will start and end
 
     doc_tuples = tuple(re.finditer(r"[0]+", binary_string))
-    
+
     # initialising tuple list, to store the tuples describing the sub doc positions
     tuple_list = []
     for i in range(len(doc_tuples)):
-        tuple_list.append(doc_tuples[i-1].span())
-        
+        tuple_list.append(doc_tuples[i - 1].span())
+
     tuple_list.reverse()
 
     return tuple_list
@@ -256,22 +252,17 @@ def pdf_split(pdf_path, output, doc_tuples):
     print(f"output file\n{output}")
     print(f"sub doc tuples\n{doc_tuples}")
 
-
     doc_src = fitz.open(pdf_path)
-    
+
     for i in range(len(doc_tuples)):
         start_page, end_page = doc_tuples[i]
-        
+
         sub_doc = fitz.open()
-        sub_doc.insert_pdf(doc_src, from_page=start_page, to_page=end_page, start_at=-1)    
+        sub_doc.insert_pdf(doc_src, from_page=start_page, to_page=end_page, start_at=-1)
         sub_doc.save(f"{output}_{i}.pdf")
-    
-    
+
     # temp return for debugging
     return True
-    
-
-
 
 
 def QR_data(image):
@@ -331,7 +322,6 @@ def save_list_png(list_png, output_filepath):
         # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
         filepath = f"{output_filepath}/test_image_page_{i}.png"
         cv2.imwrite(filepath, im_to_save)
-
 
 
 if __name__ == "__main__":
