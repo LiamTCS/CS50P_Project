@@ -182,11 +182,19 @@ def pdf_image_list(file):
         # resize image
         output_openCV = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
         images.append(output_openCV)  # adding the image to the list
-        print(f"page {page} converted to image, added to list")
+        
+        
+        
+        print(f"{page} converted to image, added to list")
 
     # Return list of generated images
     return images
 
+def progress_bar(num, den):
+    # implement a terminal progress bar that is passed a numerator/denominator, and ouputs a progress bar showing the percentage of task completion
+    perc = num/den
+    
+    ...
 
 def QR_sep_present(list_png):
     """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
@@ -234,7 +242,7 @@ def sub_doc_pos(sep_page_pos):
     for i in range(len(doc_tuples)):
         tuple_list.append(doc_tuples[i-1].span())
         
-    # implement a method to reverse tuple_list 
+    tuple_list.reverse()
 
     return tuple_list
 
@@ -245,8 +253,17 @@ def pdf_split(pdf_path, output, doc_tuples):
     print(f"output file\n{output}")
     print(f"sub doc tuples\n{doc_tuples}")
 
-    ...
 
+    doc_src = fitz.open(pdf_path)
+    
+    for i in range(len(doc_tuples)):
+        start_page, end_page = doc_tuples[i].span()
+        
+        sub_doc = fitz.open()
+        sub_doc.insertPDF(doc_src, from_page=start_page, to_page=end_page, start_at=1)    
+        sub_doc.save(f"{output}_{i}")
+    
+    
 
 
 
