@@ -93,10 +93,10 @@ def main():
     pdf_path, output_path = user_input()
 
     # producing a list containing images of each pdf page
-    doc_images = pdf_image_list(pdf_path)
+    doc_images = pdf_2_image_list(pdf_path)
 
     # determine if the seperator qr code is present in each image from the list
-    sep_pos = QR_sep_present(doc_images)
+    sep_pos = QR_seperator_present(doc_images)
 
     # determine where each sub document starts and ends
     sub_doc_tuples = sub_doc_pos(sep_pos)
@@ -126,7 +126,7 @@ def user_input():
     return pdf_file, output_filename
 
 
-def pdf_image_list(file):
+def pdf_2_image_list(file):
     """this function is given a filepath string of a pdf, and returns a list containing the converted images
 
     Args:
@@ -197,7 +197,7 @@ def progress_bar(num, den):
     
     ...
 
-def QR_sep_present(list_png):
+def QR_seperator_present(list_png):
     """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
 
     Args:
