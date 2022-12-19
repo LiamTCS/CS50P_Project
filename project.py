@@ -236,9 +236,12 @@ def sub_doc_pos(sep_page_pos):
 
     # initialising tuple list, to store the tuples describing the sub doc positions
     tuple_list = []
+    
+    # The information stored in doc_tuples contains more than what is needed, to make working with this information more affective, a new list containing just the start and end positions was created
     for i in range(len(doc_tuples)):
         tuple_list.append(doc_tuples[i - 1].span())
 
+    # The above produces a reversed list, due to using .append(), reversing list
     tuple_list.reverse()
 
     return tuple_list
