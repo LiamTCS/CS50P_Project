@@ -176,9 +176,8 @@ def pdf_2_image_list(file):
         scaling_factor = current_width / desired_width
         dsize = (600, int(openCV_format.shape[0] / scaling_factor))
 
-        # resize image
-        output_openCV = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
-        images.append(output_openCV)  # adding the image to the list
+        # resize the image, and append it to the images list
+        images.append(cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA))  # adding the image to the list
 
         print(f"{page} converted to image, added to list")
 
