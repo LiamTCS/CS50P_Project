@@ -11,5 +11,19 @@ Once the locations of the seperator pages have been determined by the program th
 
 The resulting files are named based on user preference, as a default they share the name of the parent file, but with a number increments appended to the end, or it can use a user provided prefix, with an option to append either an incrementing letter or number to the end.
 
-# Other functionality
+## Other functionality
 The program will also have the ability to produce a PDF file of the seperator page. If the user wants to use a custom QR code in the seperator page, it will also produce an information pdf that must be placed first in the document scan. This information page will contain 2 QR codes, both the default QR code, and the Custom QR code seperator that the user wishes to use.
+
+
+
+
+# Challenges overcome
+# Problem: OpenCV takes a long time
+While testing the QR_seperator_present function I found that the time it takes to perform the opencv QR code recognition on an image is correlated very strongly with the images resolution. 
+To further explore the issue I carried out a few tests, the results of which can be seen in the table below.
+
+Size Name|Image Size (px) | Average Run Completion (s)
+Original|2550x3300 |  1.846 
+Large|1080x1398| 0.296
+Medium|768x994|
+Small|480x621|0.076
