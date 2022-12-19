@@ -20,6 +20,8 @@ def main():
 def subdoc_split(doc_contents):
     
     doc_page_list = tuple(re.finditer(r"[0]+", doc_contents))
+    # extract tuple info we are interested in, don't needed matched text (its all 0's anyway)
+    
     return doc_page_list
 
 

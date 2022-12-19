@@ -86,119 +86,47 @@ class QR_pages:
 
 
 def main():
-
-    # temp_user_file = "two_qr_types_test_doc.pdf"
-
-    test_file_desktop = "/home/liams/python/CS50P_Project/two_qr_types_test_doc.pdf"
-    test_file_laptop = "/home/liams/CS50P_Project/TEST PDF Scans/test scan to test.pdf"
-    
-    
-    temp_user_file = test_file_laptop
-    # user_file = input("Enter PDF filename:\n")
-    # print(f"User enterred: {user_file}\n This is a temporary debug action")
-
-    # open_pdf = open(temp_user_file)
-
-    # convert pdf file to list of png images
-    list_png = pdf_images(temp_user_file)
-
-    # check each image to see if it contains the QR code
-
-    # output folder abs path
-    output_filepath = "/home/liams/python/CS50P_Project/Output"
-
-    # for debugging, save list_png images to file
-    save_list_png(list_png, output_filepath)
-
-    # loop through each image, passing each image to the QR code present function
-    # but first, identify the QR code on the first page, and use that as the seperator QR code
-
-    sep_page_location = Determine_QR_Sep_location(list_png)
-
-    print("################################")
-    print(f"Each page is the seperator page Yes/No: \n{sep_page_location}")
-
-
-
-    # for debug/dev
-    out_string = ""
-    for i in range(len(sep_page_location)):
-        bool_value = sep_page_location[i]
-        if bool_value:
-            out_string += "1"
-        else:
-            out_string += "0"
-        
-
-    print(f"sep_page_location as binary string:\n{out_string}")
-    
-    
     
 
-
-def save_list_png(list_png, output_filepath):
-    for i in range(len(list_png)):
-        im_to_save = list_png[i]
-        # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
-        filepath = f"{output_filepath}/test_image_page_{i}.png"
-        cv2.imwrite(filepath, im_to_save)
-
-
-def determine_document_locations(sep_location):
+    # getting user input
+    pdf_path, output_path = user_input()
     
-    # This function is passed a list containing boolean values indicating whether or not the corresponding page number of the document is a QR code seperator page or not. 
-    # As an example, given the following:
-    # [True, True, False, False, False, True, False]
-    # this function would return:
-    # [0, 0, 1, 1, 1, 0, 2]
-    # The "1's" indicate that these pages will be in seperated document number 1, the 2 indicates it will be in document 2. O's indicate seperator pages, and as such wont be output
+    # producing a list containing images of each pdf page
+    doc_images = pdf_image_list(pdf_path)
     
+    # determine if the seperator qr code is present in each image from the list
+    sep_pos = QR_sep_present(doc_images)
     
-    # check to ensure a seperator page is present
-    if True not in sep_location:
-        # if no seperator pages found
-        raise ValueError("The Pdf contains no QR code seperator pages")
+    # determine where each sub document starts and ends
+    sub_doc_tuples = sub_doc_pos(sep_pos)
     
-    
-    # can have any number of documents, although must be less than doc.length
-
-    # tuples can be used to determine which page ranges are going to make up a given doc, see
-    # regex_testing.py, for a working implementation!
-            
-    # TODO Steps
-    # 1. find document start. for doc #1 this either means the first non qr page from begining or the first page
-    # 2. find end of sub doc. search for pattern doc_page, qr
-    
-    
+    pdf_split(pdf_path, output_path, sub_doc_tuples)
 
 
-def Determine_QR_Sep_location(list_png):
-    """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
-
-    Args:
-        list_png (_type_): A list of images to check for QR codes
-
-    Returns:
-        Boolean list: a list of boolean values, indicating the presence of the seperator qr code on each page
-    """
-
-    sep_string = QR_data(list_png[0])
-    # initialising a list to contain location of the seperator pages
-    sep_page_location = []
-
-    for i in range(len(list_png)):
-        # check whether the seperator QR code is present
-        if QR_code_present(list_png[i], sep_string):
-            # if true
-            sep_page_location.append(True)
-        else:
-            # if false
-            sep_page_location.append(False)
-    return sep_page_location
+def user_input():
+    test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/test scan to test.pdf"
+    test_output = ""
 
 
-def pdf_images(file):
-    """this function is given an opened pdf file, and returns a list containing the converted images
+    pdf_file = input("Enter PDF Filename:\n")
+
+    output_filename = input("Desired output filename:\n")
+
+    # for testing purposes
+    pdf_file = test_pdf
+
+
+    # ensures that there will be an output filename
+    if output_filename == "":
+        output_filename = "pdf_split"
+
+    # implement some input validation, check file is valid etc, should put this in a while loop when I get around to it
+
+    return pdf_file, output_filename
+
+
+def pdf_image_list(file):
+    """this function is given a filepath string of a pdf, and returns a list containing the converted images
 
     Args:
         file (string): The location of the pdf file to be converted to a list of images
@@ -251,6 +179,69 @@ def pdf_images(file):
 
     # Return list of generated images
     return images
+
+
+def QR_sep_present(list_png):
+    """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
+
+    Args:
+        list_png (_type_): A list of images to check for QR codes
+
+    Returns:
+        Boolean list: a list of boolean values, indicating the presence of the seperator qr code on each page
+    """
+
+    sep_string = QR_data(list_png[0])
+    # initialising a list to contain location of the seperator pages
+    sep_page_location = []
+
+    for i in range(len(list_png)):
+        # check whether the seperator QR code is present
+        if QR_code_present(list_png[i], sep_string):
+            # if true
+            sep_page_location.append(True)
+        else:
+            # if false
+            sep_page_location.append(False)
+    return sep_page_location
+
+
+
+
+def sub_doc_pos(sep_page_pos):
+    # this function is given a boolean list, typically produced by QR_sep_present, and returns a list containing tuples, indicating the start and end positions of any number of sub documents that the input pdf will be split into 
+    
+    # converting the boolean list into a binary string
+    binary_string = ""
+    for i in range(len(sep_page_pos)):
+        bool_value = sep_page_pos[i]
+        if bool_value:
+            binary_string += "1"
+        else:
+            binary_string += "0"
+            
+    # use re to determine where each document will start and end
+    
+    doc_list = tuple(re.finditer(r"[0]+", binary_string))
+    print(doc_list)
+    
+    return doc_list
+    
+def pdf_split(pdf_path, output, doc_tuples):
+    # to implement, for now, just outputs each variable
+    print(f"pdf filepath\n{pdf_path}")
+    print(f"output file\n{output}")
+    print(f"sub doc tuples\n{doc_tuples}")
+    
+    ...
+
+
+def save_list_png(list_png, output_filepath):
+    for i in range(len(list_png)):
+        im_to_save = list_png[i]
+        # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
+        filepath = f"{output_filepath}/test_image_page_{i}.png"
+        cv2.imwrite(filepath, im_to_save)
 
 
 def QR_data(image):
