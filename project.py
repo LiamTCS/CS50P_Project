@@ -1,7 +1,7 @@
 """Final project.py file"""
 import qrcode
 from fpdf import FPDF
-
+import os
 
 # for regex
 import re
@@ -116,13 +116,84 @@ def user_input():
     pdf_file = test_pdf
     output_filename = test_output
 
-    # ensures that there will be an output filename
-    if output_filename == "":
-        output_filename = "pdf_split"
+    # # ensures that there will be an output filename
+    # if output_filename == "":
+    #     output_filename = "pdf_split"
 
-    # implement some input validation, check file is valid etc, should put this in a while loop when I get around to it
+    while True:
+        pdf_file = input("Enter PDF Filename:\n")
+        output_filename = input("Desired output filename:\n")
+        
+        # for testing
+        # TODO remove
+        pdf_file = test_pdf
+        output_filename = test_output
 
+        valid, msg = input_validation(pdf_file, output_filename)
+
+        if valid:
+            break
+        else:
+            print(f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again")
     return pdf_file, output_filename
+
+
+def input_validation(pdf, output):
+    """This function validates the user inputs. By carrying out the following checks:
+    1. Checking that the input filename ends with ".pdf"
+    2. Checking for the existance of the input file
+    3. Checking that the output filename ends with ".pdf"
+    4. checking that the desired output file does not exist
+
+    Args:
+        pdf (string): filename or filepath
+        output (string): filename or filepath
+
+    Returns:
+        Bool: Is input valid
+        String: A string containing information about which validity checks failed. Might be useful to display the message to the user, so they know where the issue is.
+
+    """
+
+    # this function validates the input and output files that are passed to the user_input function
+    # returns TRUE or FALSE, depending on validity
+
+    # msg string is used to pass back the failure condition to the calling function.
+    msg = ""
+    valid = True
+
+    # checking input file
+
+    # Does the input File end in ".pdf"?
+    if not pdf.endswith(".pdf"):
+        # if input file doesn't end in .pdf, then not valid
+        valid = False
+        msg = msg + ' Input File Does not end with ".pdf".'
+
+    # Checking whether the output file already exists, if so inform user
+    if not os.path.isFile(pdf):
+        # if input file does not exist
+        msg = msg + " Input file does not exist."
+        valid = False
+
+    # Checking output file
+
+    # checking to ensure the output file does not already exist
+    if os.path.isFile(output):
+        # File exists, not a valid input
+        valid = False
+        msg = msg + " Output file already exists"
+
+    # checking if the output file ends with ".pdf"
+    if not output.endswith(".pdf"):
+        # if input file doesn't end in .pdf, then not valid
+        valid = False
+        msg = msg + ' Output File Does not end with ".pdf".'
+
+    # A msg string with leading whitespace can be produced, this strips it
+    msg.strip()
+
+    return valid, msg
 
 
 def pdf_2_image_list(file):
@@ -326,12 +397,12 @@ def QR_code_present(image, qr_data):
         return False
 
 
-def save_list_png(list_png, output_filepath):
-    for i in range(len(list_png)):
-        im_to_save = list_png[i]
-        # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
-        filepath = f"{output_filepath}/test_image_page_{i}.png"
-        cv2.imwrite(filepath, im_to_save)
+# def save_list_png(list_png, output_filepath):
+#     for i in range(len(list_png)):
+#         im_to_save = list_png[i]
+#         # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
+#         filepath = f"{output_filepath}/test_image_page_{i}.png"
+#         cv2.imwrite(filepath, im_to_save)
 
 
 if __name__ == "__main__":
