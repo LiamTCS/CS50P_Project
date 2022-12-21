@@ -35,8 +35,6 @@ import pickle
 
 
 # TODO testing of sub_doc_pos
-
-
 def test_sub_doc_pos():
     list_1 = [True, False, False, False, False, False, False, True]
     list_2 = [True, False, False, True, False, False, False, False]
