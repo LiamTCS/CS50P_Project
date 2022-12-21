@@ -245,7 +245,8 @@ def pdf_2_image_list(file):
         dsize = (600, int(openCV_format.shape[0] / scaling_factor))
 
         # resize the image, and append it to the images list
-        resized = cv2.resize(openCV_format, dsize,interpolation=cv2.INTER_AREA)
+        resized = cv2.resize(openCV_format, dsize,
+                             interpolation=cv2.INTER_AREA)
 
         # appending image data to list
         images.append(resized)
@@ -373,7 +374,8 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc = fitz.open()
 
         # insert a given range of pages from a given pdf document, doc_src
-        sub_doc.insert_pdf(doc_src, from_page=start_page,to_page=end_page, start_at=-1)
+        sub_doc.insert_pdf(doc_src, from_page=start_page,
+                           to_page=end_page, start_at=-1)
 
         # save the new sub document as a new file, using the output filename provided by user
         sub_doc.save(f"{output}_{i}.pdf")
