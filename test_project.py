@@ -6,25 +6,18 @@ from project import sub_doc_pos, input_validation, QR_data
 
 import pytest
 import pickle
-import cv2 # used for image loading
-
+import cv2  # used for image loading
 
 
 # TODO Add unit tests for each of the functions in project.py
 
 
-
-
 # TODO Add tests for user_input()
-
-
 
 
 # TODO Input Validation - Passing Tests
 def test_input_validation_passing():
     ...
-    
-    
 
 
 # TODO Input Validation - Failing Tests
@@ -33,10 +26,14 @@ def test_input_validation_failing():
     ...
 
 # TODO testing of pdf_2_image function, will have to investigate how to best test this, maybe with type?
+
+
 def test_pdf_2_image_list():
     ...
 
 # TODO Testing of QR_sep_present
+
+
 def test_QR_sep_present():
     ...
 
@@ -88,13 +85,3 @@ def test_sub_doc_pos():
     assert sub_doc_pos(list_4) == [(4, 6), (1, 3), (8, 11)]
 
 # TODO testing of pdf_split
-
-
-
-
-
-
-
-
-
-
