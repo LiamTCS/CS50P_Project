@@ -1,4 +1,4 @@
-from project import QR_code_present, QR_data
+from project import detect_QR_present, QR_data
 import cv2
 
 import time
@@ -25,7 +25,7 @@ repitions = 50
 tic = time.perf_counter()
 
 for i in range(repitions):
-    _ = QR_code_present(test_image, qr_data)
+    _ = detect_QR_present(test_image, qr_data)
 
 
 toc = time.perf_counter()
