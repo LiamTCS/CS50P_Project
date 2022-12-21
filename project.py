@@ -300,18 +300,13 @@ def QR_sep_present(image_list, qr_data):
     Returns:
         Boolean list: a list of boolean values, indicating the presence of the seperator qr code on each page
     """
-
-    # TODO needs to be improved, so that a qr page is not required for the first page, only if using a custom one
-    
-    
-    
     
     # initialising a list to contain location of the seperator pages
     sep_page_location = []
 
     for i in range(len(image_list)):
         # check whether the seperator QR code is present
-        if detect_QR_present(image_list[i], sep_string):
+        if detect_QR_present(image_list[i], qr_data):
             # if true
             sep_page_location.append(True)
         else:
