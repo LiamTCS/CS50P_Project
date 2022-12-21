@@ -202,8 +202,6 @@ def pdf_2_image_list(file):
         list: Returns a list containing image data of type "numpy.ndarray"
     """
 
-    # return convert_from_path(file, fmt="png", size=(500, None))
-
     # Using pdf2image required external dependencies that I could not use
     # Using the PyMuPDF library instead
 
