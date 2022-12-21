@@ -6,6 +6,7 @@ from project import sub_doc_pos, input_validation, QR_data
 
 import pytest
 import pickle
+import cv2 # used for image loading
 
 
 
@@ -40,26 +41,41 @@ def test_QR_sep_present():
     ...
 
 # TODO Testing of QR_Data
+
+
 def test_QR_Data_passing():
-    # Test what happens when a QR code is present
-    
-    # loading the appropriate pkl files,
-    img1 = pickle.load("test_data/QR_data/img_1.pkl")
-    img2 = pickle.load("test_data/QR_data/img_2.pkl")
-    img3 = pickle.load("test_data/QR_data/img_3.pkl")
-    ...
+    """Verifying correct behaviour of the QR_Data function
+    """
+
+    # Loading the test images
+    img1 = cv2.imread("test_data/QR_data/img_1.png")
+    img2 = cv2.imread("test_data/QR_data/img_2.png")
+    img3 = cv2.imread("test_data/QR_data/img_3.png")
+
+    # assertions
+    assert QR_data(img1) == (True, 'test qr code')
+    assert QR_data(img2) == (True, 'Default_Seperator')
+    assert QR_data(img3) == (True, 'Default_Seperator')
 
 
 def test_QR_Data_failing():
-    # test what happens when no QR code is present
-    
-    # Loading the appropriate pkl files
-    no_qr_1 = pickle.load("test_data/QR_data/no_qr_1.pkl")
-    no_qr_2 = pickle.load("test_data/QR_data/no_qr_2.pkl")
-    no_qr_3 = pickle.load("test_data/QR_data/no_qr_3.pkl")
-    ...
+    """Verifying correct behaviour of the QR_Data function when a QR code is not present
+    """
+
+    # Loading the test images
+    img1 = cv2.imread("test_data/QR_data/no_qr_1.png")
+    img2 = cv2.imread("test_data/QR_data/no_qr_2.png")
+    img3 = cv2.imread("test_data/QR_data/no_qr_3.png")
+
+    # assertions
+    assert QR_data(img1) == (False, '')
+    assert QR_data(img2) == (False, '')
+    assert QR_data(img3) == (False, '')
+
 
 def test_sub_doc_pos():
+    """This test checks to ensure that the sub document page ranges are found correctly
+    """
     list_1 = [True, False, False, False, False, False, False, True]
     list_2 = [True, False, False, True, False, False, False, False]
     list_3 = [False, False, False]  # no sep pages
