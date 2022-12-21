@@ -18,6 +18,12 @@ The program will also have the ability to produce a PDF file of the seperator pa
 
 
 # Challenges overcome
+# Problem: Initial solution required external dependencies
+The original implementation of pdf_2_image used the "pdf2image" module. This worked as expected, but required non pip-intallable dependencies.
+
+As a result of this oversight I rewrote the pdf_2_image function to use the PyMuPDF module, referrenced as "fitz" in the module import section. This allowed the project to satisfy the requirement that all dependencies were to be installed through pip
+
+
 # Problem: OpenCV takes a long time
 While testing the QR_seperator_present function I found that the time it takes to perform the opencv QR code recognition on an image is correlated very strongly with the images resolution. 
 To further explore the issue I carried out a few tests, the results of which can be seen in the table below.
