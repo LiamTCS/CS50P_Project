@@ -217,7 +217,7 @@ def input_validation(pdf, output):
 
 
 def pdf_2_image_list(file):
-    """this function is given a filepath string of a pdf, and returns a list containing the converted image data
+    """this function is given a file location of a pdf file, and returns a list containing the converted image data. The image data is of type "numpy.ndarray"
 
     Args:
         file (string): The location of the pdf file to be converted to a list of images
