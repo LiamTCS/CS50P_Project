@@ -40,9 +40,24 @@ def test_QR_sep_present():
     ...
 
 # TODO Testing of QR_Data
-def test_QR_Data():
+def test_QR_Data_passing():
+    # Test what happens when a QR code is present
+    
+    # loading the appropriate pkl files,
+    img1 = pickle.load("test_data/QR_data/img_1.pkl")
+    img2 = pickle.load("test_data/QR_data/img_2.pkl")
+    img3 = pickle.load("test_data/QR_data/img_3.pkl")
     ...
 
+
+def test_QR_Data_failing():
+    # test what happens when no QR code is present
+    
+    # Loading the appropriate pkl files
+    no_qr_1 = pickle.load("test_data/QR_data/no_qr_1.pkl")
+    no_qr_2 = pickle.load("test_data/QR_data/no_qr_2.pkl")
+    no_qr_3 = pickle.load("test_data/QR_data/no_qr_3.pkl")
+    ...
 
 def test_sub_doc_pos():
     list_1 = [True, False, False, False, False, False, False, True]
