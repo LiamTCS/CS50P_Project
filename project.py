@@ -94,14 +94,29 @@ def main():
     # producing a list containing images of each pdf page
     doc_images = pdf_2_image_list(pdf_path)
 
+    # Finding the seperator string, either from a qr code on the first page scanned, or the default value
+
+    default_sep_string = "seperator page"  # placeholder default might change later
+    
+    # finding qr_data split string
+    # search first page of doc, if no qr present, then use default
+    QR_present, data = QR_data(doc_images[0])
+    if QR_present:
+        sep_string = data
+    else:
+        sep_string = default_sep_string
+    
     # determine if the seperator qr code is present in each image from the list
-    sep_pos = QR_seperator_present(doc_images)
+    sep_pos = QR_sep_present(doc_images, sep_string)
 
     # determine where each sub document starts and ends
     sub_doc_tuples = sub_doc_pos(sep_pos)
 
     # returns a bool True or False, for debug purposes
     split_success, _ = pdf_split(pdf_path, output_path, sub_doc_tuples)
+    
+    if split_success:
+        print("pdf split successfully!")
 
 
 def user_input():
@@ -200,13 +215,13 @@ def input_validation(pdf, output):
 
 
 def pdf_2_image_list(file):
-    """this function is given a filepath string of a pdf, and returns a list containing the converted images
+    """this function is given a filepath string of a pdf, and returns a list containing the converted image data
 
     Args:
         file (string): The location of the pdf file to be converted to a list of images
 
     Returns:
-        list: Returns a list of images
+        list: Returns a list containing image data of type "numpy.ndarray"
     """
 
     # return convert_from_path(file, fmt="png", size=(500, None))
@@ -252,7 +267,9 @@ def pdf_2_image_list(file):
 
         # resize the image, and append it to the images list
         resized = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
-        images.append(resized)  # adding the image to the list
+        
+        # appending image data to list
+        images.append(resized)
 
         print(f"{page} converted to image, added to list")
 
@@ -266,58 +283,77 @@ def progress_bar(num, den):
 
     ...
 
-"""
-TODO Combine functionality of QR_seperator_present and QR_code_present. It will require some branching logic to handle either a single image or a list, but nothing too bad.
-Just add the single image to a list, then use the list in the rest of the code
 
 
-"""
-
-
-# def QR_present(image_data, qr_data):
-#     # given a single image, or a list of images, determine wether a QR code containing data or "qr_data" is present. Produce 
-    
-#     # this function runs on a list of images, if the function is passed a single image, it is added to a list
-#     img_list = []
-#     if type(image_data) == image:
-#         img_list.append(image_data)
-#     elif type(image_data) == list:
-#         img_list = image_data
 
 
 
 
 # TODO Change this to accept (list_png, sep_string), better practice to expose it, and do: sep_string = QR_data(list_png[0]) seperately
 # should change name to better reflect that it is calling QR_Code_present over the given list, nothing more 
-def QR_seperator_present(list_png):
-    """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
+def QR_sep_present(image_list, qr_data):
+    """This function is passed a list of images, and the qr_data it will search for,  and returns a list of Boolean values indicating whether or not a QR code containing "qr_data" is present or not
 
     Args:
-        list_png (_type_): A list of images to check for QR codes
-
+        image_list (list or numpy.ndarray image data): A list of images to check for QR codes
+        qr_data (string): data of the qr code function is to determine the presence of
     Returns:
         Boolean list: a list of boolean values, indicating the presence of the seperator qr code on each page
     """
 
     # TODO needs to be improved, so that a qr page is not required for the first page, only if using a custom one
-    default_qr_data = "seperator page"  # placeholder default might change later
     
-    sep_string = QR_data(list_png[0])
     
     
     
     # initialising a list to contain location of the seperator pages
     sep_page_location = []
 
-    for i in range(len(list_png)):
+    for i in range(len(image_list)):
         # check whether the seperator QR code is present
-        if QR_code_present(list_png[i], sep_string):
+        if detect_QR_present(image_list[i], sep_string):
             # if true
             sep_page_location.append(True)
         else:
             # if false
             sep_page_location.append(False)
     return sep_page_location
+
+
+def detect_QR_present(image, qr_data):
+    """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
+
+    Args:
+        image (image): An image that may contain a QR code
+        qr_data (string): A string containing the expected QR data that this function checks against.
+
+    Returns:
+        Bool: Returns True is the image contains a QR code with provided data, False otherwise
+    """
+
+    # Creating an object of class QRCodeDetector and calling detectAndDecode on it
+    QRCodeDetector = cv2.QRCodeDetector()
+    decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
+
+    # check if a qr code was found within the image
+    if points is not None:
+        # A QR code was found within the image
+
+        # check if the expected qr_data was found in a QR code
+        # This is done to ensure that not every QR code acts as a document splitter, only the desired one
+        if qr_data in decodedText:
+            return True
+        else:
+            return False
+    else:
+        # No QR code was found within the image
+        return False
+
+
+
+
+
+
 
 # TODO might want to allow either a bool list or a binary string to be passed, would make it more versatile
 def sub_doc_pos(sep_page_pos):
@@ -397,35 +433,6 @@ def QR_data(image):
     else:
         return False, ""
 
-
-def QR_code_present(image, qr_data):
-    """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
-
-    Args:
-        image (image): An image that may contain a QR code
-        qr_data (string): A string containing the expected QR data that this function checks against.
-
-    Returns:
-        Bool: Returns True is the image contains a QR code with provided data, False otherwise
-    """
-
-    # Creating an object of class QRCodeDetector and calling detectAndDecode on it
-    QRCodeDetector = cv2.QRCodeDetector()
-    decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
-
-    # check if a qr code was found within the image
-    if points is not None:
-        # A QR code was found within the image
-
-        # check if the expected qr_data was found in a QR code
-        # This is done to ensure that not every QR code acts as a document splitter, only the desired one
-        if qr_data in decodedText:
-            return True
-        else:
-            return False
-    else:
-        # No QR code was found within the image
-        return False
 
 
 if __name__ == "__main__":
