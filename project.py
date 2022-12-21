@@ -55,7 +55,7 @@ class QR_pages:
             align="C",
         )
 
-        # render shirt image
+        # render image
         self._pdf.image(def_qr_filepath, x=50, y=100)
 
     def save_pages(self, name):
@@ -381,18 +381,18 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc.save(f"{output}_{i}.pdf")
 
 
-def QR_data(image):
+def QR_data(image_data):
     """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
 
     Args:
-        image (cv2 image):
+        image_data (numpy.ndarray)): An numpy.ndarray containing image data
 
     Returns:
-        string : decoded text data, or the default seperator value
+        string : decoded text data, or an empty string
     """
 
     QRCodeDetector = cv2.QRCodeDetector()
-    decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
+    decodedText, points, _ = QRCodeDetector.detectAndDecode(image_data)
 
     if points is not None:
         # A QR code was found within the image
