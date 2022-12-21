@@ -343,7 +343,14 @@ def detect_QR_present(image, qr_data):
 
 
 def sub_doc_pos(sep_page_pos):
-    # this function is given a boolean list, typically produced by QR_sep_present, and returns a list containing tuples, indicating the start and end positions of any number of sub documents that the input pdf will be split into
+    """This function is given a boolean list, describing the presence of the seperator QR code pages, and returns a list of tuples, describing the sub document start and end positions
+
+    Args:
+        sep_page_pos (Boolean list): A list containing boolean values
+
+    Returns:
+        list: list of tuples. describing the start and end postition of each sub document that will be extracted
+    """
 
     # converting the boolean list into a binary string
     binary_string = ""
