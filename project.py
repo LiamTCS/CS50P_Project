@@ -97,7 +97,7 @@ def main():
     # Finding the seperator string, either from a qr code on the first page scanned, or the default value
 
     default_sep_string = "seperator page"  # placeholder default might change later
-    
+
     # finding qr_data split string
     # search first page of doc, if no qr present, then use default
     QR_present, data = QR_data(doc_images[0])
@@ -105,7 +105,7 @@ def main():
         sep_string = data
     else:
         sep_string = default_sep_string
-    
+
     # determine if the seperator qr code is present in each image from the list
     sep_pos = QR_sep_present(doc_images, sep_string)
 
@@ -114,7 +114,7 @@ def main():
 
     # Split the input pdf based on the list of sub doc tuples
     pdf_split(pdf_path, output_path, sub_doc_tuples)
-    
+
     print("pdf split successfully!")
 
 
@@ -131,7 +131,7 @@ def user_input():
     output_filename = test_output
 
     # TODO add validation checking to output filename
-    
+
     # # ensures that there will be an output filename
     # if output_filename == "":
     #     output_filename = "pdf_split"
@@ -139,7 +139,7 @@ def user_input():
     while True:
         pdf_file = input("Enter PDF Filename:\n")
         output_filename = input("Desired output filename:\n")
-        
+
         # for testing
         # TODO remove
         pdf_file = test_pdf
@@ -150,7 +150,9 @@ def user_input():
         if valid:
             break
         else:
-            print(f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again")
+            print(
+                f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
+            )
     return pdf_file, output_filename
 
 
@@ -185,7 +187,6 @@ def input_validation(pdf, output):
         # if input file doesn't end in .pdf, then not valid
         valid = False
         msg = msg + ' Input File Does not end with ".pdf".'
-
 
     # TODO need to improve input validation around input/output files
 
@@ -268,7 +269,7 @@ def pdf_2_image_list(file):
 
         # resize the image, and append it to the images list
         resized = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
-        
+
         # appending image data to list
         images.append(resized)
 
@@ -286,9 +287,6 @@ def progress_bar(num, den):
     ...
 
 
-
-
-
 def QR_sep_present(image_list, qr_data):
     """This function is passed a list of images, and the qr code data it will search for (qr_data),  and returns a list of Boolean values indicating whether or not a QR code containing "qr_data" is present or not
 
@@ -298,7 +296,7 @@ def QR_sep_present(image_list, qr_data):
     Returns:
         Boolean list: a list of boolean values, indicating the presence of the seperator qr code on each page
     """
-    
+
     # initialising a list to contain location of the seperator pages
     sep_page_location = []
 
@@ -342,7 +340,6 @@ def detect_QR_present(image, qr_data):
     else:
         # No QR code was found within the image
         return False
-
 
 
 def sub_doc_pos(sep_page_pos):
@@ -398,7 +395,6 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc.save(f"{output}_{i}.pdf")
 
 
-
 # TODO change function implementation to return two values:
 # True/False : has a QR code been detected
 # QR_Data: A string containing the data contained within  the QR code
@@ -412,7 +408,6 @@ def QR_data(image):
         string : decoded text data, or the default seperator value
     """
 
-
     QRCodeDetector = cv2.QRCodeDetector()
     decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
 
@@ -421,7 +416,6 @@ def QR_data(image):
         return True, decodedText
     else:
         return False, ""
-
 
 
 if __name__ == "__main__":
