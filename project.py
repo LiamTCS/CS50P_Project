@@ -131,6 +131,8 @@ def user_input():
     pdf_file = test_pdf
     output_filename = test_output
 
+    # TODO add validation checking to output filename
+    
     # # ensures that there will be an output filename
     # if output_filename == "":
     #     output_filename = "pdf_split"
@@ -277,6 +279,7 @@ def pdf_2_image_list(file):
     return images
 
 
+# TODO decide if this should be implemented or not
 def progress_bar(num, den):
     # implement a terminal progress bar that is passed a numerator/denominator, and ouputs a progress bar showing the percentage of task completion
     perc = num / den
@@ -287,12 +290,8 @@ def progress_bar(num, den):
 
 
 
-
-
-# TODO Change this to accept (list_png, sep_string), better practice to expose it, and do: sep_string = QR_data(list_png[0]) seperately
-# should change name to better reflect that it is calling QR_Code_present over the given list, nothing more 
 def QR_sep_present(image_list, qr_data):
-    """This function is passed a list of images, and the qr_data it will search for,  and returns a list of Boolean values indicating whether or not a QR code containing "qr_data" is present or not
+    """This function is passed a list of images, and the qr code data it will search for (qr_data),  and returns a list of Boolean values indicating whether or not a QR code containing "qr_data" is present or not
 
     Args:
         image_list (list or numpy.ndarray image data): A list of images to check for QR codes
@@ -347,11 +346,6 @@ def detect_QR_present(image, qr_data):
 
 
 
-
-
-
-
-# TODO might want to allow either a bool list or a binary string to be passed, would make it more versatile
 def sub_doc_pos(sep_page_pos):
     # this function is given a boolean list, typically produced by QR_sep_present, and returns a list containing tuples, indicating the start and end positions of any number of sub documents that the input pdf will be split into
 
@@ -381,10 +375,7 @@ def sub_doc_pos(sep_page_pos):
 
 
 def pdf_split(pdf_path, output, doc_tuples):
-    # to implement, for now, just outputs each variable
-    print(f"pdf filepath\n{pdf_path}")
-    print(f"output file\n{output}")
-    print(f"sub doc tuples\n{doc_tuples}")
+    # TODO improve documentation
 
     # Open the pdf to be split as a PyMuPDF document
     doc_src = fitz.open(pdf_path)
