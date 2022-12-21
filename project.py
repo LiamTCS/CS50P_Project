@@ -101,7 +101,7 @@ def main():
     sub_doc_tuples = sub_doc_pos(sep_pos)
 
     # returns a bool True or False, for debug purposes
-    split_success = pdf_split(pdf_path, output_path, sub_doc_tuples)
+    split_success, _ = pdf_split(pdf_path, output_path, sub_doc_tuples)
 
 
 def user_input():
@@ -264,7 +264,17 @@ def progress_bar(num, den):
 
     ...
 
+"""
+TODO Combine functionality of QR_seperator_present and QR_code_present. It will require some branching logic to handle either a single image or a list, but nothing too bad.
+Just add the single image to a list, then use the list in the rest of the code
 
+
+"""
+
+
+
+# TODO Change this to accept (list_png, sep_string), better practice to expose it, and do: sep_string = QR_data(list_png[0]) seperately
+# should change name to better reflect that it is calling QR_Code_present over the given list, nothing more 
 def QR_seperator_present(list_png):
     """This function is passed a list of images, and returns a list of Boolean values indicating whether the seperator QR code is present or no
 
@@ -276,8 +286,12 @@ def QR_seperator_present(list_png):
     """
 
     # TODO needs to be improved, so that a qr page is not required for the first page, only if using a custom one
-
+    default_qr_data = "seperator page"  # placeholder default might change later
+    
     sep_string = QR_data(list_png[0])
+    
+    
+    
     # initialising a list to contain location of the seperator pages
     sep_page_location = []
 
@@ -291,7 +305,7 @@ def QR_seperator_present(list_png):
             sep_page_location.append(False)
     return sep_page_location
 
-
+# TODO might want to allow either a bool list or a binary string to be passed, would make it more versatile
 def sub_doc_pos(sep_page_pos):
     # this function is given a boolean list, typically produced by QR_sep_present, and returns a list containing tuples, indicating the start and end positions of any number of sub documents that the input pdf will be split into
 
@@ -343,9 +357,12 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc.save(f"{output}_{i}.pdf")
 
     # temp return for debugging
-    return True
+    return True, "completed successfully"
 
 
+# TODO change function implementation to return two values:
+# True/False : has a QR code been detected
+# QR_Data: A string containing the data contained within  the QR code
 def QR_data(image):
     """This function is passed an image, and if found, returns the data contained within a qr code.
 
@@ -355,16 +372,16 @@ def QR_data(image):
     Returns:
         string : decoded text data, or the default seperator value
     """
-    default_qr_data = "seperator page"  # placeholder default might change later
+
 
     QRCodeDetector = cv2.QRCodeDetector()
     decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
 
     if points is not None:
         # A QR code was found within the image
-        return decodedText
+        return True, decodedText
     else:
-        return default_qr_data
+        return False, ""
 
 
 def QR_code_present(image, qr_data):
