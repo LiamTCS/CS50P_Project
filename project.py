@@ -8,7 +8,7 @@ import numpy as np
 import qrcode
 from fpdf import FPDF
 
-
+# TODO need to rework the QR_pages class/maybe change how seperator page pdfs are produced?
 class QR_pages:
 
     # this class contains data and functions relating to the production of both starter and seperator pages
