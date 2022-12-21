@@ -112,11 +112,10 @@ def main():
     # determine where each sub document starts and ends
     sub_doc_tuples = sub_doc_pos(sep_pos)
 
-    # returns a bool True or False, for debug purposes
-    split_success, _ = pdf_split(pdf_path, output_path, sub_doc_tuples)
+    # Split the input pdf based on the list of sub doc tuples
+    pdf_split(pdf_path, output_path, sub_doc_tuples)
     
-    if split_success:
-        print("pdf split successfully!")
+    print("pdf split successfully!")
 
 
 def user_input():
@@ -375,8 +374,13 @@ def sub_doc_pos(sep_page_pos):
 
 
 def pdf_split(pdf_path, output, doc_tuples):
-    # TODO improve documentation
+    """Splits the given input pdf, pdf_path, according to a list of tuples containing start and end pages. These sub documents are then saved to output file(s).
 
+    Args:
+        pdf_path (string): location of the input pdf. filename
+        output (string): desired output file prefix
+        doc_tuples (list): A list containing a series of tuples. Each tuple containing a start page and an end page from which each sub-document will be created
+    """
     # Open the pdf to be split as a PyMuPDF document
     doc_src = fitz.open(pdf_path)
 
@@ -393,8 +397,6 @@ def pdf_split(pdf_path, output, doc_tuples):
         # save the new sub document as a new file, using the output filename provided by user
         sub_doc.save(f"{output}_{i}.pdf")
 
-    # temp return for debugging
-    return True, "completed successfully"
 
 
 # TODO change function implementation to return two values:
