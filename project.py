@@ -402,7 +402,6 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc.save(f"{output}_{i}.pdf")
 
 
-
 def QR_data(image):
     """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
 
