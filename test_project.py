@@ -37,7 +37,7 @@ def test_pdf_2_image_list():
 def test_QR_sep_present():
     ...
 
-# TODO Testing of QR_Data
+
 
 
 def test_QR_Data_passing():
