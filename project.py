@@ -117,8 +117,7 @@ def user_input():
         pdf_file = input("Enter PDF Filename:\n")
         output_filename = input("Desired output filename:\n")
 
-        # for testing
-        # TODO remove
+        # TODO remove testing code
         pdf_file = test_pdf
         output_filename = test_output
 
