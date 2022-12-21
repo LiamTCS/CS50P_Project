@@ -395,9 +395,7 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc.save(f"{output}_{i}.pdf")
 
 
-# TODO change function implementation to return two values:
-# True/False : has a QR code been detected
-# QR_Data: A string containing the data contained within  the QR code
+
 def QR_data(image):
     """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
 
