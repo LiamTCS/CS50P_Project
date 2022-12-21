@@ -304,6 +304,7 @@ def QR_sep_present(image_list, qr_data):
     # initialising a list to contain location of the seperator pages
     sep_page_location = []
 
+    # iterates over each image in the list
     for i in range(len(image_list)):
         # check whether the seperator QR code is present
         if detect_QR_present(image_list[i], qr_data):
