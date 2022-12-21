@@ -105,7 +105,7 @@ def main():
 
 
 def user_input():
-    test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/test scan to test.pdf"
+    test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
     test_output = "Output/Trial_output"
 
     pdf_file = input("Enter PDF Filename:\n")
@@ -170,29 +170,32 @@ def input_validation(pdf, output):
         valid = False
         msg = msg + ' Input File Does not end with ".pdf".'
 
-    # Checking whether the output file already exists, if so inform user
-    if not os.path.isFile(pdf):
-        # if input file does not exist
-        msg = msg + " Input file does not exist."
-        valid = False
 
-    # Checking output file
+    # TODO need to improve input validation around input/output files
 
-    # checking to ensure the output file does not already exist
-    if os.path.isFile(output):
-        # File exists, not a valid input
-        valid = False
-        msg = msg + " Output file already exists"
+    # # Checking whether the output file already exists, if so inform user
+    # if not os.path.isFile(pdf):
+    #     # if input file does not exist
+    #     msg = msg + " Input file does not exist."
+    #     valid = False
 
-    # checking if the output file ends with ".pdf"
-    if not output.endswith(".pdf"):
-        # if input file doesn't end in .pdf, then not valid
-        valid = False
-        msg = msg + ' Output File Does not end with ".pdf".'
+    # # Checking output file
 
-    # A msg string with leading whitespace can be produced, this strips it
-    msg.strip()
+    # # checking to ensure the output file does not already exist
+    # if os.path.isFile(output):
+    #     # File exists, not a valid input
+    #     valid = False
+    #     msg = msg + " Output file already exists"
 
+    # # checking if the output file ends with ".pdf"
+    # if not output.endswith(".pdf"):
+    #     # if input file doesn't end in .pdf, then not valid
+    #     valid = False
+    #     msg = msg + ' Output File Does not end with ".pdf".'
+
+    # # A msg string with leading whitespace can be produced, this strips it
+    # msg.strip()
+    msg = "test message"
     return valid, msg
 
 
@@ -248,9 +251,8 @@ def pdf_2_image_list(file):
         dsize = (600, int(openCV_format.shape[0] / scaling_factor))
 
         # resize the image, and append it to the images list
-        images.append(
-            cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
-        )  # adding the image to the list
+        resized = cv2.resize(openCV_format, dsize, interpolation=cv2.INTER_AREA)
+        images.append(resized)  # adding the image to the list
 
         print(f"{page} converted to image, added to list")
 
@@ -270,6 +272,18 @@ Just add the single image to a list, then use the list in the rest of the code
 
 
 """
+
+
+# def QR_present(image_data, qr_data):
+#     # given a single image, or a list of images, determine wether a QR code containing data or "qr_data" is present. Produce 
+    
+#     # this function runs on a list of images, if the function is passed a single image, it is added to a list
+#     img_list = []
+#     if type(image_data) == image:
+#         img_list.append(image_data)
+#     elif type(image_data) == list:
+#         img_list = image_data
+
 
 
 
@@ -412,14 +426,6 @@ def QR_code_present(image, qr_data):
     else:
         # No QR code was found within the image
         return False
-
-
-# def save_list_png(list_png, output_filepath):
-#     for i in range(len(list_png)):
-#         im_to_save = list_png[i]
-#         # im_to_save = im_to_save.save(f"{output_filepath}/test_image_page_{i}.png")
-#         filepath = f"{output_filepath}/test_image_page_{i}.png"
-#         cv2.imwrite(filepath, im_to_save)
 
 
 if __name__ == "__main__":
