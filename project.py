@@ -385,7 +385,8 @@ def QR_data(image_data):
         image_data (numpy.ndarray)): An numpy.ndarray containing image data
 
     Returns:
-        string : decoded text data, or an empty string
+        bool    : True/False on whether the image contained a QR code
+        string  : decoded text data, or an empty string
     """
 
     QRCodeDetector = cv2.QRCodeDetector()
