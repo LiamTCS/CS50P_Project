@@ -1,35 +1,12 @@
 """Final project.py file"""
-import qrcode
-from fpdf import FPDF
 import os
-
-# for regex
 import re
 
-
-# for identifying QR codes and decoding them
-import cv2
-
-
-# fitz is what PyMuPDF is called, for backwards compatibility reasons
-import fitz
+import cv2  # for identifying QR codes and decoding them
+import fitz  # fitz is what PyMuPDF is called
 import numpy as np
-
-#from PIL import Image
-
-
-
-# import numpy as np
-# import cv2 as cv
-"""
-potentially handy reference material
-https://techtutorialsx.com/2019/12/08/python-opencv-detecting-and-decoding-a-qrcode/#:~:text=Python%20OpenCV%3A%20Detecting%20and%20Decoding%20a%20QRCode%201,of%20your%20choice.%20...%204%20References%20%5B1%5D%20https%3A%2F%2Fdocs.opencv.org%2F4.0.0%2Fde%2Fdc3%2Fclasscv_1_1QRCodeDetector.html%23a7290bd6a5d59b14a37979c3a14fbf394
-
-https://www.geeksforgeeks.org/convert-pdf-to-image-using-python/
-
-
-https://stackoverflow.com/questions/61832964/how-to-convert-pdf-into-image-readable-by-opencv-python
-"""
+import qrcode
+from fpdf import FPDF
 
 
 class QR_pages:
