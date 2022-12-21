@@ -10,15 +10,13 @@ import re
 # for identifying QR codes and decoding them
 import cv2
 
-# for converting pdf to images
-#'from pdf2image import convert_from_path, convert_from_bytes
 
 # fitz is what PyMuPDF is called, for backwards compatibility reasons
 import fitz
 import numpy as np
 
-from PIL import Image
-import PIL
+#from PIL import Image
+
 
 
 # import numpy as np
