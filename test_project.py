@@ -26,8 +26,6 @@ def test_input_validation_passing():
 def test_input_validation_failing():
     ...
 
-# TODO testing of pdf_2_image function, will have to investigate how to best test this, maybe with type?
-
 
 def test_pdf_2_image_list():
     # things we can check
@@ -47,8 +45,6 @@ def test_pdf_2_image_list():
     # checking list content variable type
     assert type(test_pdf_1[1]) == type(np.ndarray(3))
 
-    # TODO Investigate how to assert object is of type class
-
     # Testing Pdf 2
     # Checking length
     assert len(test_pdf_2) == 7
@@ -59,7 +55,6 @@ def test_pdf_2_image_list():
     # Checking list content variable type
     assert type(test_pdf_2[1]) == type(np.ndarray(3))
 
-# TODO Testing of QR_sep_present
 
 
 def test_QR_sep_present():
