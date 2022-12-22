@@ -30,7 +30,6 @@ def test_input_validation_failing():
 
 
 def test_pdf_2_image_list():
-
     # things we can check
     # var type within list
     # list length
