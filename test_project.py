@@ -81,7 +81,6 @@ def test_pdf_2_image_list():
     assert type(test_pdf_2[1]) == type(np.ndarray(3))
 
 
-
 def test_QR_sep_present():
     # loading the test PDF's
     # TODO change this to load a pickle file containing the image list.
