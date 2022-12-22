@@ -1,6 +1,7 @@
 """Final project.py file"""
 import os
 import re
+
 from os.path import exists, join
 
 import cv2  # for identifying QR codes and decoding them
@@ -218,7 +219,7 @@ def pdf_2_image_list(file):
     magnify = fitz.Matrix(zoom, zoom)  # resizes image, to be more consistent
 
     # open document
-    doc = fitz.open(file_path)
+    doc = fitz.open(file_path) # type: ignore
 
     # adding code to handle progress bars
     print("Converting pdf to images")
@@ -368,14 +369,14 @@ def pdf_split(pdf_path, output, doc_tuples):
         doc_tuples (list): A list containing a series of tuples. Each tuple containing a start page and an end page from which each sub-document will be created
     """
     # Open the pdf to be split as a PyMuPDF document
-    doc_src = fitz.open(pdf_path)
-
+    doc_src = fitz.open(pdf_path) # type: ignore
+ 
     for i in range(len(doc_tuples)):
         # extract start/end position from the list of tuples
         start_page, end_page = doc_tuples[i]
 
         # create a new blank document
-        sub_doc = fitz.open()
+        sub_doc = fitz.open() # type: ignore
 
         # insert a given range of pages from a given pdf document, doc_src
         sub_doc.insert_pdf(doc_src, from_page=start_page,
