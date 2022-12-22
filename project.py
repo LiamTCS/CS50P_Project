@@ -1,7 +1,6 @@
 """Final project.py file"""
 import os
 import re
-
 from os.path import exists, join
 
 import cv2  # for identifying QR codes and decoding them
