@@ -16,15 +16,40 @@ import numpy as np
 # TODO Add tests for user_input()
 
 
-# TODO Input Validation - Passing Tests
 def test_input_validation_passing():
-    ...
+    pdf_1_path = "test_data/input_val/pdf_test_file.pdf"
+    pdf_not_real = "test_data/input_val/output.pdf"
 
+    existing_output = "test_data/input_val/existing_output.pdf"
 
-# TODO Input Validation - Failing Tests
+    assert input_validation(pdf_1_path, pdf_not_real) == (True, "")
+    assert input_validation(existing_output, pdf_not_real) == (True, "")
+
 
 def test_input_validation_failing():
-    ...
+    pdf_1_path = "test_data/input_val/pdf_test_file.pdf"
+    pdf_not_real = "test_data/input_val/output.pdf"
+
+    existing_output = "test_data/input_val/existing_output.pdf"
+    # does input file not exist?
+    assert input_validation(pdf_not_real, "output.pdf") == (
+        False, "Input file does not exist.")
+
+    # does output file already exist?
+    assert input_validation(pdf_1_path, existing_output) == (
+        False, "Output file already exists.")
+
+    # Input file doesnt exist, and output file exists
+    assert input_validation(pdf_not_real, existing_output) == (
+        False, "Input file does not exist. Output file already exists.")
+
+    # Does Input file end in ".pdf"?
+    assert input_validation("test_data/input_val/pdf_test_file", pdf_not_real) == (
+        False, 'Input File Does not end with ".pdf". Input file does not exist.')
+
+    # Does output file end in ".pdf"?
+    assert input_validation(pdf_1_path, "pdf_test_output.doc") == (
+        False, 'Output File Does not end with ".pdf".')
 
 
 def test_pdf_2_image_list():
