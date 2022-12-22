@@ -2,6 +2,8 @@
 import os
 import re
 
+from os.path import exists
+
 import cv2  # for identifying QR codes and decoding them
 import fitz  # fitz is what PyMuPDF is called
 import numpy as np
@@ -166,28 +168,28 @@ def input_validation(pdf, output):
 
     # TODO need to improve input validation around input/output files
 
-    # # Checking whether the output file already exists, if so inform user
-    # if not os.path.isFile(pdf):
-    #     # if input file does not exist
-    #     msg = msg + " Input file does not exist."
-    #     valid = False
+    # Checking whether the output file already exists, if so inform user
+    if not exists(pdf):
+        # if input file does not exist
+        msg = msg + " Input file does not exist."
+        valid = False
 
-    # # Checking output file
+    # Checking output file
 
-    # # checking to ensure the output file does not already exist
-    # if os.path.isFile(output):
-    #     # File exists, not a valid input
-    #     valid = False
-    #     msg = msg + " Output file already exists"
+    # checking to ensure the output file does not already exist
+    if exists(output):
+        # File exists, not a valid input
+        valid = False
+        msg = msg + " Output file already exists"
 
-    # # checking if the output file ends with ".pdf"
-    # if not output.endswith(".pdf"):
-    #     # if input file doesn't end in .pdf, then not valid
-    #     valid = False
-    #     msg = msg + ' Output File Does not end with ".pdf".'
+    # checking if the output file ends with ".pdf"
+    if not output.endswith(".pdf"):
+        # if input file doesn't end in .pdf, then not valid
+        valid = False
+        msg = msg + ' Output File Does not end with ".pdf".'
 
-    # # A msg string with leading whitespace can be produced, this strips it
-    # msg.strip()
+    # A msg string with leading whitespace can be produced, this strips it
+    msg.strip()
     msg = "test message"
     return valid, msg
 
