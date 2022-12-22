@@ -2,7 +2,7 @@
     executable by pytest
 
 """
-from project import sub_doc_pos, input_validation, QR_data
+from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_2_image_list
 
 import pytest
 import pickle
@@ -35,9 +35,20 @@ def test_pdf_2_image_list():
 
 
 def test_QR_sep_present():
-    ...
+    # loading the test PDF's
+    # TODO change this to load a pickle file containing the image list.
 
+    test_pdf_1 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_1.pdf")
+    test_pdf_2 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_2.pdf")
 
+    # assertions
+    assert QR_sep_present(test_pdf_1, "Default_Seperator") == [
+        True, True, False, False, False, False, False, False,
+        False, False, True, False, False, False, False, False,
+        False, False, False, False]
+
+    assert QR_sep_present(test_pdf_2, "Default_Seperator") == [
+        True, True, False, False, True, True, False]
 
 
 def test_QR_Data_passing():
@@ -78,10 +89,14 @@ def test_sub_doc_pos():
     list_3 = [False, False, False]  # no sep pages
     list_4 = [True, False, False, True, False,
               False, True, True, False, False, False]
+    list_5 = [True, True, True]
 
     assert sub_doc_pos(list_1) == [(1, 7)]
     assert sub_doc_pos(list_2) == [(1, 3), (4, 8)]
     assert sub_doc_pos(list_3) == [(0, 3)]
     assert sub_doc_pos(list_4) == [(4, 6), (1, 3), (8, 11)]
+
+    # what if all pages are seperator pages
+    assert sub_doc_pos(list_5) == []
 
 # TODO testing of pdf_split
