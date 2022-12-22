@@ -7,6 +7,7 @@ from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_
 import pytest
 import pickle
 import cv2  # used for image loading
+import numpy as np
 
 
 # TODO Add unit tests for each of the functions in project.py
@@ -29,7 +30,35 @@ def test_input_validation_failing():
 
 
 def test_pdf_2_image_list():
-    ...
+
+    # things we can check
+    # var type within list
+    # list length
+
+    # Running pdf_2_image_list
+    test_pdf_1 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_1.pdf")
+    test_pdf_2 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_2.pdf")
+
+    # Testing Pdf 1
+    # checking length
+    assert len(test_pdf_1) == 20
+
+    # Checking variable type
+    assert type(test_pdf_1) == type([])
+    # checking list content variable type
+    assert type(test_pdf_1[1]) == type(np.ndarray(3))
+
+    # TODO Investigate how to assert object is of type class
+
+    # Testing Pdf 2
+    # Checking length
+    assert len(test_pdf_2) == 7
+
+    # Checking variable type
+    assert type(test_pdf_2) == type([])
+
+    # Checking list content variable type
+    assert type(test_pdf_2[1]) == type(np.ndarray(3))
 
 # TODO Testing of QR_sep_present
 
