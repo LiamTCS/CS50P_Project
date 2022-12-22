@@ -2,7 +2,7 @@
 import os
 import re
 
-from os.path import exists
+from os.path import exists, join
 
 import cv2  # for identifying QR codes and decoding them
 import fitz  # fitz is what PyMuPDF is called
@@ -158,29 +158,15 @@ def input_validation(pdf, output):
     msg = ""
     valid = True
 
-    # checking input file
+    # To allow handling of relative filepaths, ie output to a subfolder, the absolute filepath needs to be used.
 
-    # Does the input File end in ".pdf"?
-    if not pdf.endswith(".pdf"):
-        # if input file doesn't end in .pdf, then not valid
-        valid = False
-        msg = msg + ' Input File Does not end with ".pdf".'
+    # finding the filepath of current directory, required for checking for files that are not in the same file as the project.py program
+    cur_dir = os.getcwd()
 
-    # TODO need to improve input validation around input/output files
+    pdf_path = join(cur_dir, pdf)
+    output_path = join(cur_dir, output)
 
-    # Checking whether the output file already exists, if so inform user
-    if not exists(pdf):
-        # if input file does not exist
-        msg = msg + " Input file does not exist."
-        valid = False
-
-    # Checking output file
-
-    # checking to ensure the output file does not already exist
-    if exists(output):
-        # File exists, not a valid input
-        valid = False
-        msg = msg + " Output file already exists"
+    # Checking file extensions
 
     # checking if the output file ends with ".pdf"
     if not output.endswith(".pdf"):
@@ -188,10 +174,30 @@ def input_validation(pdf, output):
         valid = False
         msg = msg + ' Output File Does not end with ".pdf".'
 
+    # Does the input File end in ".pdf"?
+    if not pdf.endswith(".pdf"):
+        # if input file doesn't end in .pdf, then not valid
+        valid = False
+        msg = msg + ' Input File Does not end with ".pdf".'
+
+    # Checking filepath validity
+
+    # Checking whether the input file already exists, if so inform user
+    if not exists(pdf_path):
+        # if input file does not exist
+        msg = msg + " Input file does not exist."
+        valid = False
+
+    # Checking output file
+    # checking to ensure the output file does not already exist
+    if exists(output_path):
+        # File exists, not a valid input
+        valid = False
+        msg = msg + " Output file already exists."
+
     # A msg string with leading whitespace can be produced, this strips it
-    msg.strip()
-    msg = "test message"
-    return valid, msg
+
+    return valid, msg.strip()
 
 
 def pdf_2_image_list(file):
