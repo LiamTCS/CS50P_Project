@@ -12,17 +12,16 @@ import qrcode
 from fpdf import FPDF
 
 
-
 def main():
     """This function determines whether or not the program was run from the terminal with arguments, if it was, it determines which arguments, and how they correspond to the program inputs.
     If there are no arguments, then it calls the user_input function, to get input from the user
     """
     # setting default QR code seperator string
-    default_sep_string = "seperator page"  # place holder default might change later    
-    
+    default_sep_string = "seperator page"  # place holder default might change later
+
     # extract sys.argv to a list
     args = sys.argv[1:]
-    
+
     if len(args) > 0:
         results = args_validation(args)
         if results[1] == "print":
@@ -31,28 +30,28 @@ def main():
                 qr_data = default_sep_string
             else:
                 qr_data = results[3]
-                
+
             message = gen_qr_pdf(results[2], qr_data)
-            
+
         elif results[1] == "split":
             # if qr data not given, set it to default value
             if results[4] == "":
                 qr_data = default_sep_string
             else:
                 qr_data = results[4]
-                
+
             message = work_flow(results[2], results[3], qr_data)
-            
+
         else:
             message = "not a match"
-        
+
     else:
         results = user_input()
         message = work_flow(results[0], results[1], default_sep_string)
 
     print(f"program completed:\n{message}")
-    
-    
+
+
 def gen_qr_pdf(pages, data, x=50, y=100):
     """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data.
     
@@ -109,13 +108,6 @@ def gen_qr_pdf(pages, data, x=50, y=100):
     return "seperator pages produced"
 
 
-
-
-
-
-
-
-
 def work_flow(pdf_path, output_path, default_QR):
     """for a given set of valid inputs, describing an existing pdf file, and non-existant output pdf file, this function calls a series of other functions to do the following
     1. seperate each pdf page into a seperate image
@@ -131,8 +123,6 @@ def work_flow(pdf_path, output_path, default_QR):
     doc_images = pdf_2_image_list(pdf_path)
 
     # Finding the seperator string, either from a qr code on the first page scanned, or the default value
-
-    
 
     # finding qr_data split string
     # search first page of doc, if no qr present, then use default
@@ -157,6 +147,7 @@ def work_flow(pdf_path, output_path, default_QR):
 
 # TODO add ability to run the page sep from the command line, using argv's
 
+
 def user_input():
     """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
 
@@ -165,14 +156,13 @@ def user_input():
         string: A str containing the location of the input file
         string: A str containing the location of the output file
     """
-    
+
     # TODO remove after testing
     test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
     test_output = "Output/Trial_output"
 
     pdf_file = input("Enter PDF Filename:\n")
     output_file = input("Desired output filename:\n")
-
 
     # TODO remove after testing
     pdf_file = test_pdf
@@ -338,7 +328,7 @@ def pdf_2_image_list(file):
     magnify = fitz.Matrix(zoom, zoom)  # resizes image, to be more consistent
 
     # open document
-    doc = fitz.open(file_path) # type: ignore
+    doc = fitz.open(file_path)  # type: ignore
 
     # adding code to handle progress bars
     print("Converting pdf to images")
@@ -488,14 +478,14 @@ def pdf_split(pdf_path, output, doc_tuples):
         doc_tuples (list): A list containing a series of tuples. Each tuple containing a start page and an end page from which each sub-document will be created
     """
     # Open the pdf to be split as a PyMuPDF document
-    doc_src = fitz.open(pdf_path) # type: ignore
- 
+    doc_src = fitz.open(pdf_path)  # type: ignore
+
     for i in range(len(doc_tuples)):
         # extract start/end position from the list of tuples
         start_page, end_page = doc_tuples[i]
 
         # create a new blank document
-        sub_doc = fitz.open() # type: ignore
+        sub_doc = fitz.open()  # type: ignore
 
         # insert a given range of pages from a given pdf document, doc_src
         sub_doc.insert_pdf(doc_src, from_page=start_page,
