@@ -65,12 +65,17 @@ class QR_pages:
 
 
 def main():
-    # add handling to allow argv's to provide user input
-
+    """This function determines whether or not the program was run from the terminal with arguments, if it was, it determines which arguments, and how they correspond to the program inputs.
+    If there are no arguments, then it calls the user_input function
+    """
+    
+    # finding the presence of argv's
+    
+    
+    
     # getting user input
     pdf_path, output_path = user_input()
 
-    # producing a list containing images of each pdf page
     work_flow(pdf_path, output_path)
 
 
@@ -78,6 +83,17 @@ def main():
 
 
 def work_flow(pdf_path, output_path):
+    """for a given set of valid inputs, describing an existing pdf file, and non-existant output pdf file, this function calls a series of other functions to do the following
+    1. seperate each pdf page into a seperate image
+    2. detect whether or not each image has a specific qr code present
+    3. generates output pdf's based on the location of the specific qr code within the document
+    4. saves these output pdf's to the user provided location
+
+    Args:
+        pdf_path (str): The file path of the pdf to be split according to the presence of a given QR code
+        output_path (str): The location that the output files will be saved to
+    """
+    # producing a list containing images of each pdf page
     doc_images = pdf_2_image_list(pdf_path)
 
     # Finding the seperator string, either from a qr code on the first page scanned, or the default value
