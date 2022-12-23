@@ -47,24 +47,21 @@ def main():
 
     else:
         results = user_input()
-        
+
         # does user want to print sep pages or split a doc?
 
-        if results[0]==  "print":
+        if results[0] == "print":
             # if user wants to print seperator pages
             message = gen_qr_pdf(int(results[1]), results[2])
-            
-        elif results[0]== "split":
+
+        elif results[0] == "split":
             # if user wants to split a doc
             message = work_flow(results[0], results[1], default_sep_string)
-
-        
-        
 
     print(f"program completed:\n{message}")
 
 
-def gen_qr_pdf(pages: int, data: str, x=50, y=100)-> str: 
+def gen_qr_pdf(pages: int, data: str, x=50, y=100) -> str:
     """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data
     
     Args:
@@ -119,7 +116,7 @@ def gen_qr_pdf(pages: int, data: str, x=50, y=100)-> str:
     return f"pdf of length {pages} pages produced"
 
 
-def work_flow(pdf_path: str, output_path: str, default_QR: str)-> str:
+def work_flow(pdf_path: str, output_path: str, default_QR: str) -> str:
     """for a given set of valid inputs, describing an existing pdf file, and non-existant output pdf file, this function calls a series of other functions to do the following
     1. seperate each pdf page into a seperate image
     2. detect whether or not each image has a specific qr code present
@@ -181,8 +178,9 @@ def user_input():
 
     while True:
         # Ask whether the user wants to print a seperator page or split a document
-        
-        option = input("Enter s to split a PDF, or p to produce a seperator page")
+
+        option = input(
+            "Enter s to split a PDF, or p to produce a seperator page")
         if option == "s":
             pdf_file = input("Enter PDF Filename:\n")
             output_file = input("Desired output filename:\n")
@@ -203,16 +201,16 @@ def user_input():
         elif option == "p":
             sep_page_num = input("Enter Number of Seperator pages to produce:")
             qr_data = input("QR data, leave blank for default value:")
-            
+
             # set output values
             type = "print"
             output_2 = str(sep_page_num)
             output_3 = str(qr_data)
-    
+
     return [type, output_2, output_3]
 
 
-def args_validation(args: list)-> list:
+def args_validation(args: list) -> list:
     """This function is passed a list of arguments and from it determines a list of program inputs
 
     Args:
@@ -272,7 +270,7 @@ def args_validation(args: list)-> list:
         return [False]
 
 
-def input_validation(pdf: str, output: str)-> tuple:
+def input_validation(pdf: str, output: str) -> tuple:
     """This function validates the user inputs. By carrying out the following checks:
     1. Checking that the input filename ends with ".pdf"
     2. Checking for the existance of the input file
@@ -338,7 +336,7 @@ def input_validation(pdf: str, output: str)-> tuple:
     return valid, msg.strip()
 
 
-def pdf_2_image_list(file: str)->list:
+def pdf_2_image_list(file: str) -> list:
     """this function is given a file location of a pdf file, and returns a list containing the converted image data. The image data is of type "numpy.ndarray"
 
     Args:
@@ -399,15 +397,17 @@ def pdf_2_image_list(file: str)->list:
     return images
 
 
-# TODO decide if this should be implemented or not
-def progress_bar(num, den):
-    # implement a terminal progress bar that is passed a numerator/denominator, and ouputs a progress bar showing the percentage of task completion
-    perc = num / den
+# # TODO decide if this should be implemented or not
+# def progress_bar(task, num, den):
+    
+    
+#     # implement a terminal progress bar that is passed a numerator/denominator, and ouputs a progress bar showing the percentage of task completion
+#     perc = num / den
 
-    ...
+#     ...
 
 
-def QR_sep_present(image_list: list, qr_data: str)-> list:
+def QR_sep_present(image_list: list, qr_data: str) -> list:
     """This function is passed a list of images, and the qr code data it will search for (qr_data),  and returns a list of Boolean values indicating whether or not a QR code containing "qr_data" is present or not
 
     Args:
@@ -432,7 +432,7 @@ def QR_sep_present(image_list: list, qr_data: str)-> list:
     return sep_page_location
 
 
-def detect_QR_present(image, qr_data: str)-> bool:
+def detect_QR_present(image, qr_data: str) -> bool:
     """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
 
     Args:
@@ -523,7 +523,7 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
         sub_doc.save(f"{output}_{i}.pdf")
 
 
-def QR_data(image_data)-> tuple:
+def QR_data(image_data) -> tuple:
     """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
 
     Args:
