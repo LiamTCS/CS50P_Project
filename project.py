@@ -169,8 +169,8 @@ def user_input():
     test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
     test_output = "Output/Trial_output"
 
-    pdf_file = input("Enter PDF Filename:\n")
-    output_file = input("Desired output filename:\n")
+    # pdf_file = input("Enter PDF Filename:\n")
+    # output_file = input("Desired output filename:\n")
 
     # TODO remove after testing
     pdf_file = test_pdf
@@ -180,7 +180,7 @@ def user_input():
         # Ask whether the user wants to print a seperator page or split a document
 
         option = input(
-            "Enter s to split a PDF, or p to produce a seperator page")
+            "Enter s to split a PDF, or p to produce a seperator page: ")
         if option == "s":
             pdf_file = input("Enter PDF Filename:\n")
             output_file = input("Desired output filename:\n")
@@ -302,6 +302,10 @@ def input_validation(pdf: str, output: str) -> tuple:
     pdf_path = join(cur_dir, pdf)
     output_path = join(cur_dir, output)
 
+    # stripping leading and trailing quotation marks and whitespace
+    pdf = pdf.strip('"').strip("'").strip()
+    output = output.strip('"').strip("'").strip()
+    
     # Checking file extensions
 
     # checking if the output file ends with ".pdf"
