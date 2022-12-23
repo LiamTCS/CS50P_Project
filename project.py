@@ -56,7 +56,7 @@ def main():
 
         elif results[0] == "split":
             # if user wants to split a doc
-            message = work_flow(results[0], results[1], default_sep_string)
+            message = work_flow(results[1], results[2], default_sep_string)
 
     print(f"program completed:\n{message}")
 
@@ -165,16 +165,16 @@ def user_input():
         string: A str containing the location of the output file
     """
 
-    # TODO remove after testing
-    test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
-    test_output = "Output/Trial_output"
+    # # TODO remove after testing
+    # test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
+    # test_output = "Output/Trial_output"
 
-    # pdf_file = input("Enter PDF Filename:\n")
-    # output_file = input("Desired output filename:\n")
+    # # pdf_file = input("Enter PDF Filename:\n")
+    # # output_file = input("Desired output filename:\n")
 
-    # TODO remove after testing
-    pdf_file = test_pdf
-    output_file = test_output
+    # # TODO remove after testing
+    # pdf_file = test_pdf
+    # output_file = test_output
 
     while True:
         # Ask whether the user wants to print a seperator page or split a document
@@ -185,10 +185,14 @@ def user_input():
             pdf_file = input("Enter PDF Filename:\n")
             output_file = input("Desired output filename:\n")
 
+            # stripping leading and trailing quotation marks and whitespace
+            in_file = pdf_file.strip().replace("'", "").replace('"', "")
+            out_file = output_file.strip().replace("'", "").replace('"', "")
+
             # set output values
             type = "split"
-            output_2 = pdf_file
-            output_3 = output_file
+            output_2 = in_file
+            output_3 = out_file
 
             valid, msg = input_validation(pdf_file, output_file)
 
@@ -202,10 +206,13 @@ def user_input():
             sep_page_num = input("Enter Number of Seperator pages to produce:")
             qr_data = input("QR data, leave blank for default value:")
 
+            # stripping leading and trailing quotation marks and whitespace
+            qr_str = qr_data.strip().replace("'", "").replace('"', "")
+
             # set output values
             type = "print"
             output_2 = str(sep_page_num)
-            output_3 = str(qr_data)
+            output_3 = str(qr_str)
 
     return [type, output_2, output_3]
 
@@ -299,12 +306,14 @@ def input_validation(pdf: str, output: str) -> tuple:
     # finding the filepath of current directory, required for checking for files that are not in the same file as the project.py program
     cur_dir = os.getcwd()
 
-    pdf_path = join(cur_dir, pdf)
+    pdf_clean = pdf.replace("'", "").replace('"',"")
+
+
+    # creating absolute file paths
+    pdf_path = join(cur_dir, pdf_clean)
     output_path = join(cur_dir, output)
 
-    # stripping leading and trailing quotation marks and whitespace
-    pdf = pdf.strip('"').strip("'").strip()
-    output = output.strip('"').strip("'").strip()
+
     
     # Checking file extensions
 
@@ -315,7 +324,7 @@ def input_validation(pdf: str, output: str) -> tuple:
         msg = msg + ' Output File Does not end with ".pdf".'
 
     # Does the input File end in ".pdf"?
-    if not pdf.endswith(".pdf"):
+    if not pdf_clean.endswith(".pdf"):
         # if input file doesn't end in .pdf, then not valid
         valid = False
         msg = msg + ' Input File Does not end with ".pdf".'
@@ -323,14 +332,17 @@ def input_validation(pdf: str, output: str) -> tuple:
     # Checking filepath validity
 
     # Checking whether the input file already exists, if so inform user
-    if not exists(pdf_path):
+    
+    pdf_exists = exists(pdf_path)
+    if not pdf_exists:
         # if input file does not exist
         msg = msg + " Input file does not exist."
         valid = False
 
     # Checking output file
     # checking to ensure the output file does not already exist
-    if exists(output_path):
+    output_exists = exists(output_path)
+    if output_exists:
         # File exists, not a valid input
         valid = False
         msg = msg + " Output file already exists."
