@@ -1,6 +1,8 @@
 """Final project.py file"""
 import os
 import re
+import sys
+
 
 from os.path import exists, join
 
@@ -66,8 +68,16 @@ class QR_pages:
 
 def main():
     """This function determines whether or not the program was run from the terminal with arguments, if it was, it determines which arguments, and how they correspond to the program inputs.
-    If there are no arguments, then it calls the user_input function
+    If there are no arguments, then it calls the user_input function, to get input from the user
     """
+    
+    # extract sys.argv to a list
+
+    
+    
+    
+    
+    
     
     # finding the presence of argv's
     
@@ -130,14 +140,16 @@ def user_input():
         string: A str containing the location of the input file
         string: A str containing the location of the output file
     """
+    
+    # TODO remove after testing
     test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
     test_output = "Output/Trial_output"
 
     pdf_file = input("Enter PDF Filename:\n")
-
     output_file = input("Desired output filename:\n")
 
-    # for testing purposes
+
+    # TODO remove after testing
     pdf_file = test_pdf
     output_file = test_output
 
@@ -154,6 +166,59 @@ def user_input():
                 f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
             )
     return pdf_file, output_file
+
+
+def args_validation(args):
+    """This function is passed a list of arguments and from it determines a list of program inputs
+
+    Args:
+        args (list): a list of arguments, produced by calling args = str(sys.argv[1:])
+
+    Returns:
+        list: A list containing data. 
+            list[0] will always contain a boolean value, indicating if the arguments were valid or not
+            list[2] contains program action. Either print a QR seperator page, or split a document
+            list[3] contains either the number of pdf seperator pages to produce, or the file path for the input pdf
+            list[4] contains either 
+    """
+
+    # determine program action
+
+    if args[0] in ["-p", "--print"]:
+        if len(args) == 3:
+            # if custom QR data supplied
+
+            # n_copies is kept as string, makes returned data easier to handle
+            # to print a double sided pdf, need two pages the same
+            n_copies = str(int(args[1]) * 2)
+            QR_data = args[2]
+            return [True, "print", n_copies, QR_data]
+
+        elif len(args) == 2:
+            n_copies = str(int(args[1]) * 2)
+            QR_data = ""
+            return [True, "print", n_copies, QR_data]
+
+        else:
+            # if args are not valid
+            return [False, "print", "", ""]
+
+    if args[0] in ["-s", "--split"]:
+        if len(args) == 4:
+            in_path = args[1]
+            out_path = args[2]
+            QR_data = args[3]
+            return [True, "split", in_path, out_path, QR_data]
+
+        elif len(args) == 3:
+            in_path = args[1]
+            out_path = args[2]
+            QR_data = ""
+            return [True, "split", in_path, out_path, QR_data]
+
+        else:
+            return [False, "split", "", "", ""]
+
 
 
 def input_validation(pdf, output):
