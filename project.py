@@ -29,7 +29,7 @@ def main():
             if results[3] == "":
                 qr_data = default_sep_string
             else:
-                qr_data = results[3]
+                qr_data = str(results[3])
 
             message = gen_qr_pdf(results[2], qr_data)
 
@@ -52,7 +52,7 @@ def main():
 
         if results[0]==  "print":
             # if user wants to print seperator pages
-            message = gen_qr_pdf(results[1], results[2])
+            message = gen_qr_pdf(int(results[1]), results[2])
             
         elif results[0]== "split":
             # if user wants to split a doc
@@ -64,13 +64,12 @@ def main():
     print(f"program completed:\n{message}")
 
 
-def gen_qr_pdf(pages, data, x=50, y=100):
-    """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data.
+def gen_qr_pdf(pages: int, data: str, x=50, y=100)-> str: 
+    """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data
     
-
     Args:
         pages (int): the number of seperator pages the PDF should have
-        data (_type_): The data contained in the QR code on each page
+        data (str): The data contained in the QR code on each page
         x (int, optional): x dimension of QR code. Defaults to 50.
         y (int, optional): y dimension of QR code. Defaults to 100.
 
@@ -120,7 +119,7 @@ def gen_qr_pdf(pages, data, x=50, y=100):
     return f"pdf of length {pages} pages produced"
 
 
-def work_flow(pdf_path, output_path, default_QR):
+def work_flow(pdf_path: str, output_path: str, default_QR: str)-> str:
     """for a given set of valid inputs, describing an existing pdf file, and non-existant output pdf file, this function calls a series of other functions to do the following
     1. seperate each pdf page into a seperate image
     2. detect whether or not each image has a specific qr code present
@@ -213,7 +212,7 @@ def user_input():
     return [type, output_2, output_3]
 
 
-def args_validation(args):
+def args_validation(args: list)-> list:
     """This function is passed a list of arguments and from it determines a list of program inputs
 
     Args:
@@ -273,7 +272,7 @@ def args_validation(args):
         return [False]
 
 
-def input_validation(pdf, output):
+def input_validation(pdf: str, output: str)-> tuple:
     """This function validates the user inputs. By carrying out the following checks:
     1. Checking that the input filename ends with ".pdf"
     2. Checking for the existance of the input file
@@ -339,7 +338,7 @@ def input_validation(pdf, output):
     return valid, msg.strip()
 
 
-def pdf_2_image_list(file):
+def pdf_2_image_list(file: str)->list:
     """this function is given a file location of a pdf file, and returns a list containing the converted image data. The image data is of type "numpy.ndarray"
 
     Args:
@@ -408,7 +407,7 @@ def progress_bar(num, den):
     ...
 
 
-def QR_sep_present(image_list, qr_data):
+def QR_sep_present(image_list: list, qr_data: str)-> list:
     """This function is passed a list of images, and the qr code data it will search for (qr_data),  and returns a list of Boolean values indicating whether or not a QR code containing "qr_data" is present or not
 
     Args:
@@ -433,7 +432,7 @@ def QR_sep_present(image_list, qr_data):
     return sep_page_location
 
 
-def detect_QR_present(image, qr_data):
+def detect_QR_present(image, qr_data: str)-> bool:
     """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
 
     Args:
@@ -498,7 +497,7 @@ def sub_doc_pos(sep_page_pos):
     return tuple_list
 
 
-def pdf_split(pdf_path, output, doc_tuples):
+def pdf_split(pdf_path: str, output: str, doc_tuples: list):
     """Splits the given input pdf, pdf_path, according to a list of tuples containing start and end pages. These sub documents are then saved to output file(s).
 
     Args:
@@ -524,7 +523,7 @@ def pdf_split(pdf_path, output, doc_tuples):
         sub_doc.save(f"{output}_{i}.pdf")
 
 
-def QR_data(image_data):
+def QR_data(image_data)-> tuple:
     """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
 
     Args:
