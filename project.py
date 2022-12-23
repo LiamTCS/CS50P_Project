@@ -96,17 +96,17 @@ def main():
                 qr_data = default_sep_string
             else:
                 qr_data = results[4]
-            msg = work_flow(results[2], results[3], qr_data)
+            message = work_flow(results[2], results[3], qr_data)
             
         
         
         
     else:
         results = user_input()
-        msg = work_flow(results[0], results[1], default_sep_string)
+        message = work_flow(results[0], results[1], default_sep_string)
     
     
-    print(f"program completed:\n{msg}")
+    print(f"program completed:\n{message}")
     
     
     # finding the presence of argv's
