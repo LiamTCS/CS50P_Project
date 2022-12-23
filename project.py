@@ -71,6 +71,13 @@ def main():
     pdf_path, output_path = user_input()
 
     # producing a list containing images of each pdf page
+    work_flow(pdf_path, output_path)
+
+
+
+
+
+def work_flow(pdf_path, output_path):
     doc_images = pdf_2_image_list(pdf_path)
 
     # Finding the seperator string, either from a qr code on the first page scanned, or the default value
