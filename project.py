@@ -96,34 +96,33 @@ def main():
 
     print("pdf split successfully!")
 
+# TODO if the user wants to produce a seperator page, handle that within user input. Maybe before using input() have some branch condition asking the user if they wish to print a sep page?
+
+# TODO add ability to run the page sep from the command line, using argv's
 
 def user_input():
+    """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
+
+    Returns:
+        string: A str containing the location of the input file
+        string: A str containing the location of the output file
+    """
     test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
     test_output = "Output/Trial_output"
 
     pdf_file = input("Enter PDF Filename:\n")
 
-    output_filename = input("Desired output filename:\n")
+    output_file = input("Desired output filename:\n")
 
     # for testing purposes
     pdf_file = test_pdf
-    output_filename = test_output
-
-    # TODO add validation checking to output filename
-
-    # # ensures that there will be an output filename
-    # if output_filename == "":
-    #     output_filename = "pdf_split"
+    output_file = test_output
 
     while True:
         pdf_file = input("Enter PDF Filename:\n")
-        output_filename = input("Desired output filename:\n")
+        output_file = input("Desired output filename:\n")
 
-        # TODO remove testing code
-        pdf_file = test_pdf
-        output_filename = test_output
-
-        valid, msg = input_validation(pdf_file, output_filename)
+        valid, msg = input_validation(pdf_file, output_file)
 
         if valid:
             break
@@ -131,7 +130,7 @@ def user_input():
             print(
                 f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
             )
-    return pdf_file, output_filename
+    return pdf_file, output_file
 
 
 def input_validation(pdf, output):
