@@ -70,13 +70,43 @@ def main():
     """This function determines whether or not the program was run from the terminal with arguments, if it was, it determines which arguments, and how they correspond to the program inputs.
     If there are no arguments, then it calls the user_input function, to get input from the user
     """
+    # setting default QR code seperator string
+    default_sep_string = "seperator page"  # place holder default might change later
+    
+    
     
     # extract sys.argv to a list
-
+    args = sys.argv[1:]
+    
+    if len(args) > 0:
+        results = args_validation(args)
+        if results[1] == "print":
+            
+            # if qr data not given, set it to default value
+            if results[3] == "":
+                qr_data = default_sep_string
+            else:
+                qr_data = results[3]
+            msg = produce_qr_page(results[2], qr_data)
+            
+        if results[1] == "split":
+            
+            # if qr data not given, set it to default value
+            if results[4] == "":
+                qr_data = default_sep_string
+            else:
+                qr_data = results[4]
+            msg = work_flow(results[2], results[3], qr_data)
+            
+        
+        
+        
+    else:
+        results = user_input()
+        msg = work_flow(results[0], results[1], default_sep_string)
     
     
-    
-    
+    print(f"program completed:\n{msg}")
     
     
     # finding the presence of argv's
@@ -86,13 +116,21 @@ def main():
     # getting user input
     pdf_path, output_path = user_input()
 
-    work_flow(pdf_path, output_path)
+    work_flow(pdf_path, output_path, default_sep_string)
+
+def produce_qr_page(pages, qr_data):
+    """Given a number of pages, and qr_data. Produce a pdf document of given number of pages. Each page containing a QR code of given qr_data
+    """
+    
+    #placeholder
+    print(f"Number of pages: {pages}\nQR_data: ")
+    
+    return f"A Pdf with {pages} pages has been produced "
+    
 
 
 
-
-
-def work_flow(pdf_path, output_path):
+def work_flow(pdf_path, output_path, default_QR):
     """for a given set of valid inputs, describing an existing pdf file, and non-existant output pdf file, this function calls a series of other functions to do the following
     1. seperate each pdf page into a seperate image
     2. detect whether or not each image has a specific qr code present
@@ -108,7 +146,7 @@ def work_flow(pdf_path, output_path):
 
     # Finding the seperator string, either from a qr code on the first page scanned, or the default value
 
-    default_sep_string = "seperator page"  # placeholder default might change later
+    
 
     # finding qr_data split string
     # search first page of doc, if no qr present, then use default
@@ -116,7 +154,7 @@ def work_flow(pdf_path, output_path):
     if QR_present:
         sep_string = data
     else:
-        sep_string = default_sep_string
+        sep_string = default_QR
 
     # determine if the seperator qr code is present in each image from the list
     sep_pos = QR_sep_present(doc_images, sep_string)
@@ -127,7 +165,7 @@ def work_flow(pdf_path, output_path):
     # Split the input pdf based on the list of sub doc tuples
     pdf_split(pdf_path, output_path, sub_doc_tuples)
 
-    print("pdf split successfully!")
+    return "split completed successfully"
 
 # TODO if the user wants to produce a seperator page, handle that within user input. Maybe before using input() have some branch condition asking the user if they wish to print a sep page?
 
@@ -137,6 +175,7 @@ def user_input():
     """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
 
     Returns:
+        A list containing two strings, as follows
         string: A str containing the location of the input file
         string: A str containing the location of the output file
     """
@@ -165,7 +204,7 @@ def user_input():
             print(
                 f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
             )
-    return pdf_file, output_file
+    return [pdf_file, output_file]
 
 
 def args_validation(args):
