@@ -47,7 +47,19 @@ def main():
 
     else:
         results = user_input()
-        message = work_flow(results[0], results[1], default_sep_string)
+        
+        # does user want to print sep pages or split a doc?
+
+        if results[0]==  "print":
+            # if user wants to print seperator pages
+            message = gen_qr_pdf(results[1], results[2])
+            
+        elif results[0]== "split":
+            # if user wants to split a doc
+            message = work_flow(results[0], results[1], default_sep_string)
+
+        
+        
 
     print(f"program completed:\n{message}")
 
@@ -105,7 +117,7 @@ def gen_qr_pdf(pages, data, x=50, y=100):
     # saving pdf
     pdf.output(output_pdf)
 
-    return "seperator pages produced"
+    return f"pdf of length {pages} pages produced"
 
 
 def work_flow(pdf_path, output_path, default_QR):
@@ -169,18 +181,36 @@ def user_input():
     output_file = test_output
 
     while True:
-        pdf_file = input("Enter PDF Filename:\n")
-        output_file = input("Desired output filename:\n")
+        # Ask whether the user wants to print a seperator page or split a document
+        
+        option = input("Enter s to split a PDF, or p to produce a seperator page")
+        if option == "s":
+            pdf_file = input("Enter PDF Filename:\n")
+            output_file = input("Desired output filename:\n")
 
-        valid, msg = input_validation(pdf_file, output_file)
+            # set output values
+            type = "split"
+            output_2 = pdf_file
+            output_3 = output_file
 
-        if valid:
-            break
-        else:
-            print(
-                f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
-            )
-    return [pdf_file, output_file]
+            valid, msg = input_validation(pdf_file, output_file)
+
+            if valid:
+                break
+            else:
+                print(
+                    f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
+                )
+        elif option == "p":
+            sep_page_num = input("Enter Number of Seperator pages to produce:")
+            qr_data = input("QR data, leave blank for default value:")
+            
+            # set output values
+            type = "print"
+            output_2 = str(sep_page_num)
+            output_3 = str(qr_data)
+    
+    return [type, output_2, output_3]
 
 
 def args_validation(args):
@@ -321,7 +351,6 @@ def pdf_2_image_list(file):
 
     # Using pdf2image required external dependencies that I could not use
     # Using the PyMuPDF library instead
-
     file_path = file
     dpi = 300
     zoom = dpi / 72
