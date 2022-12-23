@@ -2,7 +2,7 @@
     executable by pytest
 
 """
-from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_2_image_list
+from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_2_image_list, args_validation
 
 import pytest
 import pickle
@@ -14,6 +14,69 @@ import numpy as np
 
 
 # TODO Add tests for user_input()
+
+
+def test_args_validation_passing():
+    """This test function test the passing case of the args_validation function
+    """
+
+    # input lists for testing print branch
+    args_p_1 = ["-p", "3", ""]
+    args_p_2 = ["--print", "2", "test_qr"]
+    args_p_3 = ["--print"]
+
+    # input lists for testing split branch
+    args_s_1 = ["-s", "input.pdf", "output.pdf"]
+    args_s_2 = ["--split", "input.pdf", "output.pdf", "test_qr"]
+
+    # testing print branch
+    assert args_validation(args_p_1) == [True, "print", "6", ""]
+    assert args_validation(args_p_2) == [True, "print", "4", "test_qr"]
+    assert args_validation(args_p_3) == [True, "print", "2", ""]
+
+    # testing split branch
+    assert args_validation(args_s_1) == [
+        True, "split", "input.pdf", "output.pdf", ""]
+    assert args_validation(args_s_2) == [
+        True, "split", "input.pdf", "output.pdf", "test_qr"]
+
+
+
+def test_args_validation_failing():
+    """This test function tests the failing case of the args_validation function
+    """
+    
+    # input lists for testing print branch
+    f_args_p_1 = ["--print", "1", "2", "3", "4"]  # Too many args
+    f_args_p_2 = ["-p", "1", "Bobby", "hat",
+                  "cat", "sailboat"]  # Too many args
+
+    # input lists for testing split branch
+    f_args_s_1 = ["--split", "1", "2", "3", "4"]
+    f_args_s_2 = ["-s", "1", "Bobby", "hat", "cat", "sailboat"]
+
+    # input lists for general failing cases
+    f_args_1 = ["-test"]
+    f_args_2 = ["--p"]
+    f_args_3 = ["-print"]
+    f_args_4 = ["--s"]
+    f_args_5 = ["-split"]
+
+    # invalid flag
+    assert args_validation(f_args_1) == [False]
+    assert args_validation(f_args_2) == [False]
+    assert args_validation(f_args_3) == [False]
+    assert args_validation(f_args_4) == [False]
+    assert args_validation(f_args_5) == [False]
+
+    # testing invalid print, too many arguments
+    assert args_validation(f_args_p_1) == [False, "print", "", ""]
+    assert args_validation(f_args_p_2) == [False, "print", "", ""]
+
+    # testing invalid split, too many arguments
+    assert args_validation(f_args_s_1) == [False, "split", "", "", ""]
+    assert args_validation(f_args_s_2) == [False, "split", "", "", ""]
+
 
 
 def test_input_validation_passing():
