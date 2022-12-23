@@ -511,7 +511,11 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
                            to_page=end_page, start_at=-1)
 
         # save the new sub document as a new file, using the output filename provided by user
-        sub_doc.save(f"{output}_{i}.pdf")
+        
+        # remove file ending from output
+        out_file = output.removesuffix(".pdf")
+        
+        sub_doc.save(f"{out_file}_{i}.pdf")
 
 
 def QR_data(image_data) -> tuple:
