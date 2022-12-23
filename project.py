@@ -238,6 +238,11 @@ def args_validation(args):
             QR_data = ""
             return [True, "print", n_copies, QR_data]
 
+        elif len(args) == 1:
+            # default number of pages is 2
+            n_copies = str(2)
+            QR_data = ""
+            return [True, "print", "2", ""]
         else:
             # if args are not valid
             return [False, "print", "", ""]
@@ -258,6 +263,8 @@ def args_validation(args):
         else:
             return [False, "split", "", "", ""]
 
+    else:
+        return [False]
 
 
 def input_validation(pdf, output):
