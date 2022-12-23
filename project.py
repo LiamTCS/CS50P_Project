@@ -53,7 +53,7 @@ def main():
     print(f"program completed:\n{message}")
     
     
-def gen_qr_pdf(pages, data, x=50,y=100):
+def gen_qr_pdf(pages, data, x=50, y=100):
     """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data.
     
 
@@ -66,18 +66,19 @@ def gen_qr_pdf(pages, data, x=50,y=100):
     Returns:
         str: a message string
     """
-    
+
     temp_qr_file = "pdf_data/temp_qr.png"
-    
+    output_pdf = "seperator_page.pdf"
+
     qr_img = qrcode.make(data)
     qr_img.save(temp_qr_file)
-    
+
     pdf = FPDF()
-    
+
     for i in range(pages):
-        
+
         pdf.add_page()
-        
+
         pdf.set_font("helvetica", "B", 25)
         pdf.cell(
             w=0,
@@ -90,7 +91,7 @@ def gen_qr_pdf(pages, data, x=50,y=100):
 
         # render image
         pdf.image(temp_qr_file, x=50, y=100)
-        
+
         # Adding text containing the data of the QR code
         pdf.set_font("helvetica", "", 15)
         pdf.cell(
@@ -101,12 +102,11 @@ def gen_qr_pdf(pages, data, x=50,y=100):
             new_y="NEXT",
             align="C",
         )
-    
+
     # saving pdf
-    pdf.output("pdf_data/test_output.pdf")
-    
-    # for debugging
-    return f"seperator pages produced"
+    pdf.output(output_pdf)
+
+    return "seperator pages produced"
 
 
 
