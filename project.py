@@ -3,7 +3,6 @@ import os
 import re
 import sys
 
-
 from os.path import exists, join
 
 import cv2  # for identifying QR codes and decoding them
@@ -12,45 +11,75 @@ import numpy as np
 import qrcode
 from fpdf import FPDF
 
-# TODO need to rework the QR_pages class/maybe change how seperator page pdfs are produced?
 
 
-class QR_pages:
+def main():
+    """This function determines whether or not the program was run from the terminal with arguments, if it was, it determines which arguments, and how they correspond to the program inputs.
+    If there are no arguments, then it calls the user_input function, to get input from the user
+    """
+    # setting default QR code seperator string
+    default_sep_string = "seperator page"  # place holder default might change later    
+    
+    # extract sys.argv to a list
+    args = sys.argv[1:]
+    
+    if len(args) > 0:
+        results = args_validation(args)
+        if results[1] == "print":
+            # if qr data not given, set it to default value
+            if results[3] == "":
+                qr_data = default_sep_string
+            else:
+                qr_data = results[3]
+                
+            message = gen_qr_pdf(results[2], qr_data)
+            
+        elif results[1] == "split":
+            # if qr data not given, set it to default value
+            if results[4] == "":
+                qr_data = default_sep_string
+            else:
+                qr_data = results[4]
+                
+            message = work_flow(results[2], results[3], qr_data)
+            
+        else:
+            message = "not a match"
+        
+    else:
+        results = user_input()
+        message = work_flow(results[0], results[1], default_sep_string)
 
-    # this class contains data and functions relating to the production of both starter and seperator pages
-    def __init__(self, name="default", quantity=1):
+    print(f"program completed:\n{message}")
+    
+    
+def gen_qr_pdf(pages, data, x=50,y=100):
+    """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data.
+    
 
-        # changeable class constants
-        doc_title = "Scanned PDF Document Splitter"
-        doc_author = "Liam Sproule"
+    Args:
+        pages (int): the number of seperator pages the PDF should have
+        data (_type_): The data contained in the QR code on each page
+        x (int, optional): x dimension of QR code. Defaults to 50.
+        y (int, optional): y dimension of QR code. Defaults to 100.
 
-        # QR code data
-        def_qr_data = "Other Test Data"
-        def_qr_filepath = "images/def_qr.png"
-
-        user_qr_filepath = "images/user_qr.png"
-
-        # making and saving the two qr codes, if user doesn't enter anything, then both are the same, but are both made anyway for ease of implementation
-
-        # make the qr codes
-        def_qr = qrcode.make(def_qr_data)
-        user_qr = qrcode.make(name)
-
-        # save the qr codes
-        def_qr.save(def_qr_filepath)
-        user_qr.save(user_qr_filepath)
-
-        # initialise pdf
-        self._pdf = FPDF()
-        # different things will happen if user wants to use custom qr code or not
-
-        # produce a pdf of n length with a centred default qr code
-        self._pdf.add_page()
-        # self._pdf.set_author(doc_author)
-        # self._pdf.set_title(doc_title)
-        # adding title
-        self._pdf.set_font("helvetica", "B", 25)
-        self._pdf.cell(
+    Returns:
+        str: a message string
+    """
+    
+    temp_qr_file = "pdf_data/temp_qr.png"
+    
+    qr_img = qrcode.make(data)
+    qr_img.save(temp_qr_file)
+    
+    pdf = FPDF()
+    
+    for i in range(pages):
+        
+        pdf.add_page()
+        
+        pdf.set_font("helvetica", "B", 25)
+        pdf.cell(
             w=0,
             h=60,
             txt="Scanned PDF Document Splitter",
@@ -60,73 +89,30 @@ class QR_pages:
         )
 
         # render image
-        self._pdf.image(def_qr_filepath, x=50, y=100)
-
-    def save_pages(self, name):
-        self._pdf.output(name)
-
-
-def main():
-    """This function determines whether or not the program was run from the terminal with arguments, if it was, it determines which arguments, and how they correspond to the program inputs.
-    If there are no arguments, then it calls the user_input function, to get input from the user
-    """
-    # setting default QR code seperator string
-    default_sep_string = "seperator page"  # place holder default might change later
-    
-    
-    
-    # extract sys.argv to a list
-    args = sys.argv[1:]
-    
-    if len(args) > 0:
-        results = args_validation(args)
-        if results[1] == "print":
-            
-            # if qr data not given, set it to default value
-            if results[3] == "":
-                qr_data = default_sep_string
-            else:
-                qr_data = results[3]
-            msg = produce_qr_page(results[2], qr_data)
-            
-        if results[1] == "split":
-            
-            # if qr data not given, set it to default value
-            if results[4] == "":
-                qr_data = default_sep_string
-            else:
-                qr_data = results[4]
-            message = work_flow(results[2], results[3], qr_data)
-            
+        pdf.image(temp_qr_file, x=50, y=100)
         
-        
-        
-    else:
-        results = user_input()
-        message = work_flow(results[0], results[1], default_sep_string)
+        # Adding text containing the data of the QR code
+        pdf.set_font("helvetica", "", 15)
+        pdf.cell(
+            w=0,
+            h=60,
+            txt=f"{data}",
+            new_x="LMARGIN",
+            new_y="NEXT",
+            align="C",
+        )
     
+    # saving pdf
+    pdf.output("pdf_data/test_output.pdf")
     
-    print(f"program completed:\n{message}")
-    
-    
-    # finding the presence of argv's
-    
-    
-    
-    # getting user input
-    pdf_path, output_path = user_input()
+    # for debugging
+    return f"seperator pages produced"
 
-    work_flow(pdf_path, output_path, default_sep_string)
 
-def produce_qr_page(pages, qr_data):
-    """Given a number of pages, and qr_data. Produce a pdf document of given number of pages. Each page containing a QR code of given qr_data
-    """
-    
-    #placeholder
-    print(f"Number of pages: {pages}\nQR_data: ")
-    
-    return f"A Pdf with {pages} pages has been produced "
-    
+
+
+
+
 
 
 
