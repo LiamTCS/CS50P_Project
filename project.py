@@ -151,10 +151,6 @@ def work_flow(pdf_path: str, output_path: str, default_QR: str) -> str:
 
     return "split completed successfully"
 
-# TODO if the user wants to produce a seperator page, handle that within user input. Maybe before using input() have some branch condition asking the user if they wish to print a sep page?
-
-# TODO add ability to run the page sep from the command line, using argv's
-
 
 def user_input():
     """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
@@ -164,17 +160,6 @@ def user_input():
         string: A str containing the location of the input file
         string: A str containing the location of the output file
     """
-
-    # # TODO remove after testing
-    # test_pdf = "/home/liams/CS50P_Project/TEST PDF Scans/combined test doc/two_qr_types_test_doc.pdf"
-    # test_output = "Output/Trial_output"
-
-    # # pdf_file = input("Enter PDF Filename:\n")
-    # # output_file = input("Desired output filename:\n")
-
-    # # TODO remove after testing
-    # pdf_file = test_pdf
-    # output_file = test_output
 
     while True:
         # Ask whether the user wants to print a seperator page or split a document
@@ -411,16 +396,6 @@ def pdf_2_image_list(file: str) -> list:
 
     # Return list of generated images
     return images
-
-
-# # TODO decide if this should be implemented or not
-# def progress_bar(task, num, den):
-    
-    
-#     # implement a terminal progress bar that is passed a numerator/denominator, and ouputs a progress bar showing the percentage of task completion
-#     perc = num / den
-
-#     ...
 
 
 def QR_sep_present(image_list: list, qr_data: str) -> list:

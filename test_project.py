@@ -2,7 +2,7 @@
     executable by pytest
 
 """
-from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_2_image_list, args_validation
+from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_2_image_list, args_validation, gen_qr_pdf
 
 import pytest
 import pickle
@@ -10,10 +10,11 @@ import cv2  # used for image loading
 import numpy as np
 
 
-# TODO Add unit tests for each of the functions in project.py
 
+def test_gen_pdf():
+    # testing gen_pdf function
+    assert gen_qr_pdf(6, "Other test Data") == "seperator pages produced"
 
-# TODO Add tests for user_input()
 
 
 def test_args_validation_passing():
