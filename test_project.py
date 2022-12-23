@@ -2,13 +2,11 @@
     executable by pytest
 
 """
-from project import sub_doc_pos, input_validation, QR_data, QR_sep_present, pdf_2_image_list, args_validation, gen_qr_pdf
-
-import pytest
-import pickle
 import cv2  # used for image loading
 import numpy as np
 
+from project import (QR_data, QR_sep_present, args_validation, gen_qr_pdf,
+                     input_validation, pdf_2_image_list, sub_doc_pos)
 
 
 def test_gen_pdf():
