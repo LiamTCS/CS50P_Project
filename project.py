@@ -262,7 +262,7 @@ def args_validation(args: list) -> list:
         return [False]
 
 
-def input_validation(pdf: str, output: str) -> tuple:
+def input_validation(in_path: str, output: str) -> tuple:
     """This function validates the user inputs. By carrying out the following checks:
     1. Checking that the input filename ends with ".pdf"
     2. Checking for the existance of the input file
@@ -291,46 +291,62 @@ def input_validation(pdf: str, output: str) -> tuple:
     # finding the filepath of current directory, required for checking for files that are not in the same file as the project.py program
     cur_dir = os.getcwd()
 
-    pdf_clean = pdf.replace("'", "").replace('"',"")
+    # stripping in_path of any surrounding quotation marks or whitespace
+    in_clean = in_path.replace("'", "").replace('"',"")
 
 
     # creating absolute file paths
-    pdf_path = join(cur_dir, pdf_clean)
-    output_path = join(cur_dir, output)
+    pdf_path = join(cur_dir, in_clean)
 
 
     
-    # Checking file extensions
+    # User can either specify an output file, or leave it blank
+    if output == "":
+        # If user specified default output behaviour
+        in_name = in_clean.removesuffix(".pdf")
+        output_dir = join(cur_dir, f"output/{in_name}")
+        
+        # check existance of default output directory
+        if os.path.isdir(output_dir):
+            valid = False
+            msg = "output directory already exists"
 
-    # checking if the output file ends with ".pdf"
-    if not output.endswith(".pdf"):
-        # if input file doesn't end in .pdf, then not valid
-        valid = False
-        msg = msg + ' Output File Does not end with ".pdf".'
+    else:
+        # If user has specified an output file
+        
+        # creating absolute output path
+        output_path = join(cur_dir, output)
 
+        # checking if the output file ends with ".pdf"
+        if not output.endswith(".pdf"):
+            # if input file doesn't end in .pdf, then not valid
+            valid = False
+            msg = msg + ' Output File Does not end with ".pdf".'
+
+        # Checking output file
+        # checking to ensure the output file does not already exist
+        output_exists = exists(output_path)
+        if output_exists:
+            # File exists, not a valid input
+            valid = False
+            msg = msg + " Output file already exists."
+
+
+    # Checking input file
     # Does the input File end in ".pdf"?
-    if not pdf_clean.endswith(".pdf"):
+    if not in_clean.endswith(".pdf"):
         # if input file doesn't end in .pdf, then not valid
         valid = False
         msg = msg + ' Input File Does not end with ".pdf".'
 
-    # Checking filepath validity
-
     # Checking whether the input file already exists, if so inform user
-    
     pdf_exists = exists(pdf_path)
     if not pdf_exists:
         # if input file does not exist
         msg = msg + " Input file does not exist."
         valid = False
 
-    # Checking output file
-    # checking to ensure the output file does not already exist
-    output_exists = exists(output_path)
-    if output_exists:
-        # File exists, not a valid input
-        valid = False
-        msg = msg + " Output file already exists."
+
 
     # A msg string with leading whitespace can be produced, this strips it
 
