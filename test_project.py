@@ -76,42 +76,6 @@ def test_args_validation():
     assert args_validation(f_args_s_2) == [False, "split", "", "", ""]
 
 
-# def test_args_validation_failing():
-#     """This test function tests the failing case of the args_validation function
-#     """
-
-#     # input lists for testing print branch
-#     f_args_p_1 = ["--print", "1", "2", "3", "4"]  # Too many args
-#     f_args_p_2 = ["-p", "1", "Bobby", "hat",
-#                   "cat", "sailboat"]  # Too many args
-
-#     # input lists for testing split branch
-#     f_args_s_1 = ["--split", "1", "2", "3", "4"]
-#     f_args_s_2 = ["-s", "1", "Bobby", "hat", "cat", "sailboat"]
-
-#     # input lists for general failing cases
-#     f_args_1 = ["-test"]
-#     f_args_2 = ["--p"]
-#     f_args_3 = ["-print"]
-#     f_args_4 = ["--s"]
-#     f_args_5 = ["-split"]
-
-#     # invalid flag
-#     assert args_validation(f_args_1) == [False]
-#     assert args_validation(f_args_2) == [False]
-#     assert args_validation(f_args_3) == [False]
-#     assert args_validation(f_args_4) == [False]
-#     assert args_validation(f_args_5) == [False]
-
-#     # testing invalid print, too many arguments
-#     assert args_validation(f_args_p_1) == [False, "print", "", ""]
-#     assert args_validation(f_args_p_2) == [False, "print", "", ""]
-
-#     # testing invalid split, too many arguments
-#     assert args_validation(f_args_s_1) == [False, "split", "", "", ""]
-#     assert args_validation(f_args_s_2) == [False, "split", "", "", ""]
-
-
 def test_input_validation():
     """This unit test test the input_validation function
     """
