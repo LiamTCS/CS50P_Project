@@ -169,7 +169,8 @@ def user_input():
             "Enter s to split a PDF, or p to produce a seperator page: ")
         if option == "s":
             pdf_file = input("Enter PDF Filename:\n")
-            output_file = input("Desired output filename, leave blank for default:\n")
+            output_file = input(
+                "Desired output filename, leave blank for default:\n")
 
             # stripping leading and trailing quotation marks and whitespace
             in_file = pdf_file.strip().replace("'", "").replace('"', "")
@@ -293,20 +294,17 @@ def input_validation(in_path: str, output: str) -> tuple:
     cur_dir = os.getcwd()
 
     # stripping in_path of any surrounding quotation marks or whitespace
-    in_clean = in_path.replace("'", "").replace('"',"")
-
+    in_clean = in_path.replace("'", "").replace('"', "")
 
     # creating absolute file paths
     pdf_path = join(cur_dir, in_clean)
 
-
-    
     # User can either specify an output file, or leave it blank
     if output == "":
         # If user specified default output behaviour
         in_name = in_clean.removesuffix(".pdf")
         output_dir = join(cur_dir, f"output/{in_name}")
-        
+
         # check existance of default output directory
         if os.path.isdir(output_dir):
             valid = False
@@ -314,7 +312,7 @@ def input_validation(in_path: str, output: str) -> tuple:
 
     else:
         # If user has specified an output file
-        
+
         # creating absolute output path
         output_path = join(cur_dir, output)
 
@@ -332,7 +330,6 @@ def input_validation(in_path: str, output: str) -> tuple:
             valid = False
             msg = msg + " Output file already exists."
 
-
     # Checking input file
     # Does the input File end in ".pdf"?
     if not in_clean.endswith(".pdf"):
@@ -346,8 +343,6 @@ def input_validation(in_path: str, output: str) -> tuple:
         # if input file does not exist
         msg = msg + " Input file does not exist."
         valid = False
-
-
 
     # A msg string with leading whitespace can be produced, this strips it
 
@@ -515,42 +510,33 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
     """
     # current directory
     cur_dir = os.getcwd()
-    
-    
+
     # getting input file stem
     in_stem = Path(pdf_path).stem
-    
-    
+
     # If default output behaviour, create output directory
     if output == "":
         # if default output behaviour
-        
+
         # creating relative filepath
         out_rel_dir = f"output/{in_stem}"
         out_stem = in_stem
-        
+
         sub_folder = "output"
-        
+
         # creating absolute filepath
         out_abs_dir = join(cur_dir, out_rel_dir)
-        
+
         # creating output directory
-        
+
         os.mkdir(out_abs_dir)
-        
-        
+
     else:
         # absolute output filepath
         out_abs = join(cur_dir, output)
         out_stem = Path(output).stem
         sub_folder = ""
 
-    
-
-    
-    
-    
-    
     # Open the pdf to be split as a PyMuPDF document
     doc_src = fitz.open(pdf_path)  # type: ignore
 
@@ -572,7 +558,7 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
         else:
             # if it is in a sub folder
             out_abs_path = f"{cur_dir}/{sub_folder}/{out_stem}_{i}.pdf"
-        
+
         # save the new sub document as a new file, in the correct output location
         sub_doc.save(out_abs_path)
 
