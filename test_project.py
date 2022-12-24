@@ -196,10 +196,10 @@ def test_sub_doc_pos():
               False, True, True, False, False, False]
     list_5 = [True, True, True]
 
-    assert sub_doc_pos(list_1) == [(1, 7)]
-    assert sub_doc_pos(list_2) == [(1, 3), (4, 8)]
-    assert sub_doc_pos(list_3) == [(0, 3)]
-    assert sub_doc_pos(list_4) == [(4, 6), (1, 3), (8, 11)]
+    assert sub_doc_pos(list_1) == [(1, 6)]
+    assert sub_doc_pos(list_2) == [(1, 2), (4, 7)]
+    assert sub_doc_pos(list_3) == [(0, 2)]
+    assert sub_doc_pos(list_4) == [(4, 5), (1, 2), (8, 10)]
 
     # what if all pages are seperator pages
     assert sub_doc_pos(list_5) == []
