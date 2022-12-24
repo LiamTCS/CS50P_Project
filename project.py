@@ -1,4 +1,3 @@
-"""Final project.py file"""
 import os
 import re
 import sys
@@ -8,8 +7,12 @@ from pathlib import Path
 import cv2  # for identifying QR codes and decoding them
 import fitz  # fitz is what PyMuPDF is referenced as
 import numpy as np
-import qrcode # Used to generate QR codes
-from fpdf import FPDF # Used to produce the seperator PDF pages
+import qrcode  # Used to generate QR codes
+from fpdf import FPDF  # Used to produce the seperator PDF pages
+
+"""This program was written by Liam Sproule to satisfy the requirements set for the final project of CS50P
+Completed 24-12-2022
+"""
 
 
 def main():
