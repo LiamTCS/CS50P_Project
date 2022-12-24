@@ -14,7 +14,6 @@ def test_gen_pdf():
     assert gen_qr_pdf(6, "Other test Data") == "seperator pages produced"
 
 
-
 def test_args_validation_passing():
     """This test function test the passing case of the args_validation function
     """
@@ -40,11 +39,10 @@ def test_args_validation_passing():
         True, "split", "input.pdf", "output.pdf", "test_qr"]
 
 
-
 def test_args_validation_failing():
     """This test function tests the failing case of the args_validation function
     """
-    
+
     # input lists for testing print branch
     f_args_p_1 = ["--print", "1", "2", "3", "4"]  # Too many args
     f_args_p_2 = ["-p", "1", "Bobby", "hat",
@@ -75,7 +73,6 @@ def test_args_validation_failing():
     # testing invalid split, too many arguments
     assert args_validation(f_args_s_1) == [False, "split", "", "", ""]
     assert args_validation(f_args_s_2) == [False, "split", "", "", ""]
-
 
 
 def test_input_validation_passing():
