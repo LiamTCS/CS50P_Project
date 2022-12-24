@@ -492,7 +492,15 @@ def sub_doc_pos(sep_page_pos):
 
     # The information stored in doc_tuples contains more than what is needed, to make working with this information more affective, a new list containing just the start and end positions was created
     for i in range(len(doc_tuples)):
-        tuple_list.append(doc_tuples[i - 1].span())
+        # second tuple value needs to be reduced by 1, due to differences in how the pdf split function and regex operates
+
+        # extracting tuple values
+        first, second = doc_tuples[i-1].span()
+        # producing a new tuple
+        temp_tuple = tuple([first, (second-1)])
+
+        # appending correct tuple to list
+        tuple_list.append(temp_tuple)
 
     # The above produces a reversed list, due to using .append(), reversing list
     tuple_list.reverse()
@@ -557,7 +565,7 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
             out_abs_path = f"{out_stem}_{i}.pdf"
         else:
             # if it is in a sub folder
-            out_abs_path = f"{cur_dir}/{sub_folder}/{out_stem}_{i}.pdf"
+            out_abs_path = f"{cur_dir}/{sub_folder}/{out_stem}/{out_stem}_{i}.pdf"
 
         # save the new sub document as a new file, in the correct output location
         sub_doc.save(out_abs_path)
