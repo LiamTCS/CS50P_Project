@@ -2,6 +2,7 @@
 import os
 import re
 import sys
+from pathlib import Path
 
 from os.path import exists, join
 
@@ -512,6 +513,44 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
         output (string): desired output file prefix
         doc_tuples (list): A list containing a series of tuples. Each tuple containing a start page and an end page from which each sub-document will be created
     """
+    # current directory
+    cur_dir = os.getcwd()
+    
+    
+    # getting input file stem
+    in_stem = Path(pdf_path).stem
+    
+    
+    # If default output behaviour, create output directory
+    if output == "":
+        # if default output behaviour
+        
+        # creating relative filepath
+        out_rel_dir = f"output/{in_stem}"
+        out_stem = in_stem
+        
+        sub_folder = "output"
+        
+        # creating absolute filepath
+        out_abs_dir = join(cur_dir, out_rel_dir)
+        
+        # creating output directory
+        
+        os.mkdir(out_abs_dir)
+        
+        
+    else:
+        # absolute output filepath
+        out_abs = join(cur_dir, output)
+        out_stem = Path(output).stem
+        sub_folder = ""
+
+    
+
+    
+    
+    
+    
     # Open the pdf to be split as a PyMuPDF document
     doc_src = fitz.open(pdf_path)  # type: ignore
 
@@ -526,12 +565,16 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
         sub_doc.insert_pdf(doc_src, from_page=start_page,
                            to_page=end_page, start_at=-1)
 
-        # save the new sub document as a new file, using the output filename provided by user
+        # creating the output files absolute filepath
+        if sub_folder == "":
+            # if output is not in a subfolder
+            out_abs_path = f"{out_stem}_{i}.pdf"
+        else:
+            # if it is in a sub folder
+            out_abs_path = f"{cur_dir}/{sub_folder}/{out_stem}_{i}.pdf"
         
-        # remove file ending from output
-        out_file = output.removesuffix(".pdf")
-        
-        sub_doc.save(f"{out_file}_{i}.pdf")
+        # save the new sub document as a new file, in the correct output location
+        sub_doc.save(out_abs_path)
 
 
 def QR_data(image_data) -> tuple:
