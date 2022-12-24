@@ -203,4 +203,3 @@ def test_sub_doc_pos():
 
     # what if all pages are seperator pages
     assert sub_doc_pos(list_5) == []
-
