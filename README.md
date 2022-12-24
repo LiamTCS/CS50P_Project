@@ -23,6 +23,9 @@ The program also has the ability to produce a PDF file of the separator pages. I
 
 In addition to being able to interact with the program by using the command line, users can also operate the program by passing it arguments at runtime. This allows the program to be operated much more efficiently by the end user.
 
+To make using this program even easier I have included several default behaviours. The most useful of which is the default output file behaviour. The default output file behaviour is to make a subfolder within the output folder, which is named according to the input file name. Within this sub folder each of the sub documents will be saved. This behaviour allows the user to stay more organised when splitting a number of documents
+
+
 
 
 # Challenges overcome
