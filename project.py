@@ -75,8 +75,8 @@ def gen_qr_pdf(pages: int, data: str, x=50, y=100) -> str:
         str: a message string
     """
 
-    temp_qr_file = "pdf_data/temp_qr.png"
-    output_pdf = "seperator_page.pdf"
+    temp_qr_file = "test_data/gen_pdf/temp_qr.png"
+    output_pdf = "output/seperator_page.pdf"
 
     qr_img = qrcode.make(data)
     qr_img.save(temp_qr_file)

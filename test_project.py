@@ -11,7 +11,8 @@ from project import (QR_data, QR_sep_present, args_validation, gen_qr_pdf,
 
 def test_gen_pdf():
     # testing gen_pdf function
-    assert gen_qr_pdf(6, "Other test Data") == "seperator pages produced"
+    assert gen_qr_pdf(6, "Other test Data") == "pdf of length 6 pages produced"
+    assert gen_qr_pdf(12, "test Qr Code") == "pdf of length 12 pages produced"
 
 
 def test_args_validation_passing():
@@ -100,7 +101,7 @@ def test_input_validation_failing():
 
     # Input file doesnt exist, and output file exists
     assert input_validation(pdf_not_real, existing_output) == (
-        False, "Input file does not exist. Output file already exists.")
+        False, "Output file already exists. Input file does not exist.")
 
     # Does Input file end in ".pdf"?
     assert input_validation("test_data/input_val/pdf_test_file", pdf_not_real) == (
@@ -142,8 +143,6 @@ def test_pdf_2_image_list():
 
 def test_QR_sep_present():
     # loading the test PDF's
-    # TODO change this to load a pickle file containing the image list.
-
     test_pdf_1 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_1.pdf")
     test_pdf_2 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_2.pdf")
 
@@ -205,4 +204,3 @@ def test_sub_doc_pos():
     # what if all pages are seperator pages
     assert sub_doc_pos(list_5) == []
 
-# TODO testing of pdf_split
