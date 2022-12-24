@@ -1,9 +1,10 @@
-# All pip - installable libraries that your project requires should be listed here, line by line. Delete this text once filled out. Will interfer with the assignment marking system
-
+os
+re
+sys
+pathlib
+opencv-python-headless
 fpdf2
 qrcode
 PyMuPDF
-re
-opencv-python-headless
 numpy
 Pillow
