@@ -5,5 +5,5 @@ __pycache__
 output.*
 pdf_data/*
 Dev_Folder/*
-output/example_doc/*.pdf
+output/*
 input/*.pdf
