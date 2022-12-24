@@ -562,10 +562,10 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
         # creating the output files absolute filepath
         if sub_folder == "":
             # if output is not in a subfolder
-            out_abs_path = f"{out_stem}_{i}.pdf"
+            out_abs_path = f"{out_stem}_{i + 1}.pdf"
         else:
             # if it is in a sub folder
-            out_abs_path = f"{cur_dir}/{sub_folder}/{out_stem}/{out_stem}_{i}.pdf"
+            out_abs_path = f"{cur_dir}/{sub_folder}/{out_stem}/{out_stem}_{i + 1}.pdf"
 
         # save the new sub document as a new file, in the correct output location
         sub_doc.save(out_abs_path)
