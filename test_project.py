@@ -9,16 +9,18 @@ from project import (QR_data, QR_sep_present, args_validation, gen_qr_pdf,
                      input_validation, pdf_2_image_list, sub_doc_pos)
 
 
-def test_gen_pdf():
+def test_gen_qr_pdf():
     # testing gen_pdf function
     assert gen_qr_pdf(6, "Other test Data") == "pdf of length 6 pages produced"
     assert gen_qr_pdf(12, "test Qr Code") == "pdf of length 12 pages produced"
 
 
-def test_args_validation_passing():
-    """This test function test the passing case of the args_validation function
+def test_args_validation():
+    """This unit test test the args_validation function
     """
 
+    """ This section tests the function in the passing case
+    """
     # input lists for testing print branch
     args_p_1 = ["-p", "3", ""]
     args_p_2 = ["--print", "2", "test_qr"]
@@ -39,9 +41,7 @@ def test_args_validation_passing():
     assert args_validation(args_s_2) == [
         True, "split", "input.pdf", "output.pdf", "test_qr"]
 
-
-def test_args_validation_failing():
-    """This test function tests the failing case of the args_validation function
+    """The assertions below test the args_validation function is failing cases
     """
 
     # input lists for testing print branch
@@ -76,21 +76,57 @@ def test_args_validation_failing():
     assert args_validation(f_args_s_2) == [False, "split", "", "", ""]
 
 
-def test_input_validation_passing():
+# def test_args_validation_failing():
+#     """This test function tests the failing case of the args_validation function
+#     """
+
+#     # input lists for testing print branch
+#     f_args_p_1 = ["--print", "1", "2", "3", "4"]  # Too many args
+#     f_args_p_2 = ["-p", "1", "Bobby", "hat",
+#                   "cat", "sailboat"]  # Too many args
+
+#     # input lists for testing split branch
+#     f_args_s_1 = ["--split", "1", "2", "3", "4"]
+#     f_args_s_2 = ["-s", "1", "Bobby", "hat", "cat", "sailboat"]
+
+#     # input lists for general failing cases
+#     f_args_1 = ["-test"]
+#     f_args_2 = ["--p"]
+#     f_args_3 = ["-print"]
+#     f_args_4 = ["--s"]
+#     f_args_5 = ["-split"]
+
+#     # invalid flag
+#     assert args_validation(f_args_1) == [False]
+#     assert args_validation(f_args_2) == [False]
+#     assert args_validation(f_args_3) == [False]
+#     assert args_validation(f_args_4) == [False]
+#     assert args_validation(f_args_5) == [False]
+
+#     # testing invalid print, too many arguments
+#     assert args_validation(f_args_p_1) == [False, "print", "", ""]
+#     assert args_validation(f_args_p_2) == [False, "print", "", ""]
+
+#     # testing invalid split, too many arguments
+#     assert args_validation(f_args_s_1) == [False, "split", "", "", ""]
+#     assert args_validation(f_args_s_2) == [False, "split", "", "", ""]
+
+
+def test_input_validation():
+    """This unit test test the input_validation function
+    """
+    # Test data
     pdf_1_path = "test_data/input_val/pdf_test_file.pdf"
     pdf_not_real = "test_data/input_val/output.pdf"
-
     existing_output = "test_data/input_val/existing_output.pdf"
 
+    """This portion of assertions test the passing case
+    """
     assert input_validation(pdf_1_path, pdf_not_real) == (True, "")
     assert input_validation(existing_output, pdf_not_real) == (True, "")
 
-
-def test_input_validation_failing():
-    pdf_1_path = "test_data/input_val/pdf_test_file.pdf"
-    pdf_not_real = "test_data/input_val/output.pdf"
-
-    existing_output = "test_data/input_val/existing_output.pdf"
+    """This portion of tests tests the failing case
+    """
     # does input file not exist?
     assert input_validation(pdf_not_real, "output.pdf") == (
         False, "Input file does not exist.")
@@ -156,9 +192,11 @@ def test_QR_sep_present():
         True, True, False, False, True, True, False]
 
 
-def test_QR_Data_passing():
-    """Verifying correct behaviour of the QR_Data function
+def test_QR_data():
+    """This function tests the QR_Data function
     """
+
+    # This section tests for passing cases
 
     # Loading the test images
     img1 = cv2.imread("test_data/QR_data/img_1.png")
@@ -170,11 +208,7 @@ def test_QR_Data_passing():
     assert QR_data(img2) == (True, 'Default_Seperator')
     assert QR_data(img3) == (True, 'Default_Seperator')
 
-
-def test_QR_Data_failing():
-    """Verifying correct behaviour of the QR_Data function when a QR code is not present
-    """
-
+    # This section tests for failing cases
     # Loading the test images
     img1 = cv2.imread("test_data/QR_data/no_qr_1.png")
     img2 = cv2.imread("test_data/QR_data/no_qr_2.png")
