@@ -169,7 +169,7 @@ def user_input():
             "Enter s to split a PDF, or p to produce a seperator page: ")
         if option == "s":
             pdf_file = input("Enter PDF Filename:\n")
-            output_file = input("Desired output filename:\n")
+            output_file = input("Desired output filename, leave blank for default:\n")
 
             # stripping leading and trailing quotation marks and whitespace
             in_file = pdf_file.strip().replace("'", "").replace('"', "")
