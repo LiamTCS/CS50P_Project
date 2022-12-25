@@ -64,7 +64,7 @@ def main():
     print(f"program completed:\n{message}")
 
 
-def user_input():
+def user_input()->list:
     """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
 
     Returns:
@@ -438,7 +438,7 @@ def QR_sep_present(image_list: list, qr_data: str) -> list:
     # iterates over each image in the list
     for i in range(len(image_list)):
         # check whether the seperator QR code is present
-        if detect_QR_present(image_list[i], qr_data):
+        if QR_match(image_list[i], qr_data):
             # if true
             sep_page_location.append(True)
         else:
@@ -447,7 +447,7 @@ def QR_sep_present(image_list: list, qr_data: str) -> list:
     return sep_page_location
 
 
-def detect_QR_present(image, qr_data: str) -> bool:
+def QR_match(image, qr_data: str) -> bool:
     """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
 
     Args:
