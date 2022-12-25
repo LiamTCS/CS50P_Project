@@ -1,5 +1,5 @@
 # Scanned PDF Document Splitter
-#### Video Demo:  https://youtu.be/OFb1Tqq4bxI
+#### **Video Demo:**  https://youtu.be/OFb1Tqq4bxI
 #### **Description:**
 This program can be used to separate a given scanned PDF document, into multiple separate PDF files, based on the presence of separator pages, that each contain a specific QR code.
 
@@ -105,6 +105,17 @@ This function is passed a single image, and returns two values. The first value 
 This function is only used on the first scanned page, to determine what the seperator QR code is for this specific document. Although this program is perfectly happy just using the default QR code as an indication as to where to seperate the documents, it can also use a custom QR code seperator. The user can use a custom seperator by ensuring that a page containing their custom seperator is the the first page of the document that they are splitting.
 
   
+### **test_project.py**
+This file contains a number of unit test, (runable using pytest) that together test the functions found within the project.py file.
+
+
+
+### **requirement.txt**
+This file lists all of the pip-installable modules that this project uses
+
+### **.gitignore**
+Described the files that are ignored by git. For example the contents of the input or output folder are not tracked by git, as they are not related to the programs development.
+
 
 
 ## **Challenges overcome**
