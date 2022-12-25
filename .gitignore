@@ -7,5 +7,4 @@ pdf_data/*
 Dev_Folder/*
 output/*
 input/*.pdf
-test_data/gen_pdf/temp_qr.png
-
+test_data/gen_pdf/*
