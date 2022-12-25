@@ -64,6 +64,57 @@ def main():
     print(f"program completed:\n{message}")
 
 
+def user_input():
+    """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
+
+    Returns:
+        A list containing two strings, as follows
+        string: A str containing the location of the input file
+        string: A str containing the location of the output file
+    """
+
+    while True:
+        # Ask whether the user wants to print a seperator page or split a document
+
+        option = input(
+            "Enter s to split a PDF, or p to produce a seperator page: ")
+        if option == "s":
+            pdf_file = input("Enter PDF Filename:\n")
+            output_file = input(
+                "Desired output filename, leave blank for default:\n")
+
+            # stripping leading and trailing quotation marks and whitespace
+            in_file = pdf_file.strip().replace("'", "").replace('"', "")
+            out_file = output_file.strip().replace("'", "").replace('"', "")
+
+            # set output values
+            type = "split"
+            output_2 = in_file
+            output_3 = out_file
+
+            valid, msg = input_validation(pdf_file, output_file)
+
+            if valid:
+                break
+            else:
+                print(
+                    f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
+                )
+        elif option == "p":
+            sep_page_num = input("Enter Number of Seperator pages to produce:")
+            qr_data = input("QR data, leave blank for default value:")
+
+            # stripping leading and trailing quotation marks and whitespace
+            qr_str = qr_data.strip().replace("'", "").replace('"', "")
+
+            # set output values
+            type = "print"
+            output_2 = str(sep_page_num)
+            output_3 = str(qr_str)
+
+    return [type, output_2, output_3]
+
+
 def gen_qr_pdf(pages: int, data: str, x=50, y=100) -> str:
     """This function produces a pdf of a given number of pages. Each page contains a QR code containing given data
     
@@ -153,57 +204,6 @@ def work_flow(pdf_path: str, output_path: str, default_QR: str) -> str:
     pdf_split(pdf_path, output_path, sub_doc_tuples)
 
     return "split completed successfully"
-
-
-def user_input():
-    """This function handles the user input to the program. It checks the validity by passing the user input to the input_validation function. Once the user provides a valid set of user inputs it returns the pdf_file location and the output_file location
-
-    Returns:
-        A list containing two strings, as follows
-        string: A str containing the location of the input file
-        string: A str containing the location of the output file
-    """
-
-    while True:
-        # Ask whether the user wants to print a seperator page or split a document
-
-        option = input(
-            "Enter s to split a PDF, or p to produce a seperator page: ")
-        if option == "s":
-            pdf_file = input("Enter PDF Filename:\n")
-            output_file = input(
-                "Desired output filename, leave blank for default:\n")
-
-            # stripping leading and trailing quotation marks and whitespace
-            in_file = pdf_file.strip().replace("'", "").replace('"', "")
-            out_file = output_file.strip().replace("'", "").replace('"', "")
-
-            # set output values
-            type = "split"
-            output_2 = in_file
-            output_3 = out_file
-
-            valid, msg = input_validation(pdf_file, output_file)
-
-            if valid:
-                break
-            else:
-                print(
-                    f"User inputs are not valid, for the following reason(s):\n{msg}\nPlease Try Again"
-                )
-        elif option == "p":
-            sep_page_num = input("Enter Number of Seperator pages to produce:")
-            qr_data = input("QR data, leave blank for default value:")
-
-            # stripping leading and trailing quotation marks and whitespace
-            qr_str = qr_data.strip().replace("'", "").replace('"', "")
-
-            # set output values
-            type = "print"
-            output_2 = str(sep_page_num)
-            output_3 = str(qr_str)
-
-    return [type, output_2, output_3]
 
 
 def args_validation(args: list) -> list:
