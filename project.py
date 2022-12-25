@@ -72,6 +72,9 @@ def user_input():
         string: A str containing the location of the input file
         string: A str containing the location of the output file
     """
+    
+    default_QR_data = "Seperator Page"
+    
 
     while True:
         # Ask whether the user wants to print a seperator page or split a document
@@ -107,6 +110,10 @@ def user_input():
             # stripping leading and trailing quotation marks and whitespace
             qr_str = qr_data.strip().replace("'", "").replace('"', "")
 
+            # giving the qr data string a default value
+            if qr_str == "":
+                qr_str = default_QR_data
+
             # set output values
             type = "print"
             output_2 = str(sep_page_num)
@@ -128,6 +135,8 @@ def gen_qr_pdf(pages: int, data: str, x=50, y=100) -> str:
     Returns:
         str: a message string
     """
+    
+    
 
     temp_qr_file = "test_data/gen_pdf/temp_qr.png"
     output_pdf = "output/seperator_page.pdf"
