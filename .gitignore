@@ -1,10 +1,5 @@
-Output/*.pdf
-test images/*.png
-TEST PDF Scans/*
 __pycache__
-output.*
-pdf_data/*
-Dev_Folder/*
-output/*
 input/*.pdf
+output.*
 test_data/gen_pdf/*
+output/*
