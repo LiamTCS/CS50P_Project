@@ -111,6 +111,7 @@ def user_input():
             type = "print"
             output_2 = str(sep_page_num)
             output_3 = str(qr_str)
+            break
 
     return [type, output_2, output_3]
 
