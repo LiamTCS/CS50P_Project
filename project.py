@@ -139,7 +139,7 @@ def gen_qr_pdf(pages: int, data: str, x=50, y=100) -> str:
     
 
     temp_qr_file = "test_data/gen_pdf/temp_qr.png"
-    output_pdf = "output/seperator_page.pdf"
+    output_pdf = "Output/seperator_page.pdf"
 
     qr_img = qrcode.make(data)
     qr_img.save(temp_qr_file)
