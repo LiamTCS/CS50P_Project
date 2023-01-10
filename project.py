@@ -10,6 +10,10 @@ import numpy as np
 import qrcode  # Used to generate QR codes
 from fpdf import FPDF  # Used to produce the seperator PDF pages
 
+
+from QR_detect import *
+
+
 """This program was written by Liam Sproule to satisfy the requirements set for the final project of CS50P
 Completed 24-12-2022
 """
@@ -192,7 +196,7 @@ def work_flow(pdf_path: str, output_path: str, default_QR: str) -> str:
         output_path (str): The location that the output files will be saved to
     """
     # producing a list containing images of each pdf page
-    doc_images = pdf_2_image_list(pdf_path)
+    doc_images = seperator_positions(pdf_path)
 
     # Finding the seperator string, either from a qr code on the first page scanned, or the default value
 
@@ -361,65 +365,6 @@ def input_validation(in_path: str, output: str) -> tuple:
     return valid, msg.strip()
 
 
-def pdf_2_image_list(file: str) -> list:
-    """this function is given a file location of a pdf file, and returns a list containing the converted image data. The image data is of type "numpy.ndarray"
-
-    Args:
-        file (string): The location of the pdf file to be converted to a list of images
-
-    Returns:
-        list: Returns a list containing image data of type "numpy.ndarray"
-    """
-
-    # Using pdf2image required external dependencies that I could not use
-    # Using the PyMuPDF library instead
-    file_path = file
-    dpi = 300
-    zoom = dpi / 72
-    magnify = fitz.Matrix(zoom, zoom)  # resizes image, to be more consistent
-
-    # open document
-    doc = fitz.open(file_path)  # type: ignore
-
-    # adding code to handle progress bars
-    print("Converting pdf to images")
-
-    # initialising a list to contain the generated images
-    images = []
-
-    # loop through each page, generating an image for each
-    for page in doc:
-        picture = page.get_pixmap(matrix=magnify)  # rendering page to an image
-
-        # converting the pixmap to an image in BGR format (what openCV wants)
-        np_array = np.frombuffer(picture.samples, dtype=np.uint8)
-        np_array = np_array.reshape(picture.h, picture.w, picture.n)
-
-        # converting RGB to BGR format
-        openCV_format = cv2.cvtColor(np_array, cv2.COLOR_RGB2BGR)
-
-        # resizing the image, so later cv2 qr code recognition runs faster
-
-        # determine scaling factor to resize image by
-        # desired final image width
-        desired_width = 600
-
-        # producing dsize tuple, to find new dimensions
-        current_width = openCV_format.shape[1]
-        scaling_factor = current_width / desired_width
-        dsize = (600, int(openCV_format.shape[0] / scaling_factor))
-
-        # resize the image, and append it to the images list
-        resized = cv2.resize(openCV_format, dsize,
-                             interpolation=cv2.INTER_AREA)
-
-        # appending image data to list
-        images.append(resized)
-
-        print(f"{page} converted to image, added to list")
-
-    # Return list of generated images
-    return images
 
 
 def QR_sep_present(image_list: list, qr_data: str) -> list:
@@ -447,34 +392,7 @@ def QR_sep_present(image_list: list, qr_data: str) -> list:
     return sep_page_location
 
 
-def QR_match(image, qr_data: str) -> bool:
-    """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
 
-    Args:
-        image (image): An image that may contain a QR code
-        qr_data (string): A string containing the expected QR data that this function checks against.
-
-    Returns:
-        Bool: Returns True is the image contains a QR code with provided data, False otherwise
-    """
-
-    # Creating an object of class QRCodeDetector and calling detectAndDecode on it
-    QRCodeDetector = cv2.QRCodeDetector()
-    decodedText, points, _ = QRCodeDetector.detectAndDecode(image)
-
-    # check if a qr code was found within the image
-    if points is not None:
-        # A QR code was found within the image
-
-        # check if the expected qr_data was found in a QR code
-        # This is done to ensure that not every QR code acts as a document splitter, only the desired one
-        if qr_data in decodedText:
-            return True
-        else:
-            return False
-    else:
-        # No QR code was found within the image
-        return False
 
 
 def sub_doc_pos(sep_page_pos):
@@ -582,26 +500,6 @@ def pdf_split(pdf_path: str, output: str, doc_tuples: list):
         # save the new sub document as a new file, in the correct output location
         sub_doc.save(out_abs_path)
 
-
-def QR_data(image_data) -> tuple:
-    """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
-
-    Args:
-        image_data (numpy.ndarray)): An numpy.ndarray containing image data
-
-    Returns:
-        bool    : True/False on whether the image contained a QR code
-        string  : decoded text data, or an empty string
-    """
-
-    QRCodeDetector = cv2.QRCodeDetector()
-    decodedText, points, _ = QRCodeDetector.detectAndDecode(image_data)
-
-    if points is not None:
-        # A QR code was found within the image
-        return True, decodedText
-    else:
-        return False, ""
 
 
 if __name__ == "__main__":

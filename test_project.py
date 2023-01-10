@@ -5,8 +5,15 @@
 import cv2  # used for image loading
 import numpy as np
 
-from project import (QR_data, QR_sep_present, args_validation, gen_qr_pdf,
-                     input_validation, pdf_2_image_list, sub_doc_pos)
+from QR_detect import *
+
+from project import *
+
+
+#from project import (QR_data, QR_sep_present, args_validation, gen_qr_pdf,
+ #                    input_validation, pdf_2_image_list, sub_doc_pos)
+
+
 
 
 def test_gen_qr_pdf():
@@ -118,8 +125,8 @@ def test_pdf_2_image_list():
     # list length
 
     # Running pdf_2_image_list
-    test_pdf_1 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_1.pdf")
-    test_pdf_2 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_2.pdf")
+    test_pdf_1 = seperator_positions("test_data/pdf_2_img/test_pdf_1.pdf")
+    test_pdf_2 = seperator_positions("test_data/pdf_2_img/test_pdf_2.pdf")
 
     # Testing Pdf 1
     # checking length
@@ -143,8 +150,8 @@ def test_pdf_2_image_list():
 
 def test_QR_sep_present():
     # loading the test PDF's
-    test_pdf_1 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_1.pdf")
-    test_pdf_2 = pdf_2_image_list("test_data/pdf_2_img/test_pdf_2.pdf")
+    test_pdf_1 = seperator_positions("test_data/pdf_2_img/test_pdf_1.pdf")
+    test_pdf_2 = seperator_positions("test_data/pdf_2_img/test_pdf_2.pdf")
 
     # assertions
     assert QR_sep_present(test_pdf_1, "Default_Seperator") == [

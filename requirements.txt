@@ -1,6 +1,3 @@
-os
-re
-sys
 pathlib
 opencv-python-headless
 fpdf2
