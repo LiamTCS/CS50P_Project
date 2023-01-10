@@ -2,6 +2,7 @@
 import cv2
 import fitz
 import numpy as np
+import re
 
 
 
@@ -10,7 +11,7 @@ import numpy as np
 
 
 
-def seperator_positions(file: str, qr_data:="seperator page"):
+def seperator_positions(file: str, qr_data="seperator page"):
     """this function is given a file location of a pdf file, and returns a list containing the converted image data. The image data is of type "numpy.ndarray"
 
     Args:
@@ -70,37 +71,43 @@ def seperator_positions(file: str, qr_data:="seperator page"):
     # After producing the images, check each one for the presence of the  QR seperator page
 
 
+    binary_string = "" # initialising string to store sep page positions
 
+    for i in range(len(images)):
+        # checking whether specific QR code is present
+        if QR_match(images[i], qr_data):
+            # if true
+            binary_string += "1" 
+        else:
+            binary_string += "0"
+
+    # Finding sub document locations
+
+    # Initialising tuple list, to store the tuples describing sub doc positions
+    tuple_list = []
+
+    # Using regex to find the start and stop page numbers for each sub document
+    doc_tuples = tuple(re.finditer(r"[0]+", binary_string))
+
+    for i in range(len(doc_tuples)):
+        # second tuple value needs to be reduced by one
+
+        # extracting tuple values
+        first, second = doc_tuples[i-1].span()
+
+        # producing a new tuple
+        temp_tuple = tuple([first, (second - 1)])
+
+        # appending tuple to list
+        tuple_list.append(temp_tuple)
+
+    # then reversing the list
+    tuple_list.reverse()
 
     # Return list of generated images
     return images
 
 
-
-
-def QR_data(image_data) -> tuple:
-    """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
-
-    Args:
-        image_data (numpy.ndarray)): An numpy.ndarray containing image data
-
-    Returns:
-        bool    : True/False on whether the image contained a QR code
-        string  : decoded text data, or an empty string
-    """
-
-    QRCodeDetector = cv2.QRCodeDetector()
-    decodedText, points, _ = QRCodeDetector.detectAndDecode(image_data)
-
-    if points is not None:
-        # A QR code was found within the image
-        return True, decodedText
-    else:
-        return False, ""
-    
-    
-    
-    
 def QR_match(image, qr_data: str) -> bool:
     """This function determines whether or not a QR code, containing the given data qr_data. Is present within the image. If the desired QR code is present a boolean True is returned, other False is returned
 
@@ -129,3 +136,27 @@ def QR_match(image, qr_data: str) -> bool:
     else:
         # No QR code was found within the image
         return False
+    
+    
+    
+
+def QR_data(image_data) -> tuple:
+    """This function is passed an image, and if a QR code is found, returns the data contained within the qr code.
+
+    Args:
+        image_data (numpy.ndarray)): An numpy.ndarray containing image data
+
+    Returns:
+        bool    : True/False on whether the image contained a QR code
+        string  : decoded text data, or an empty string
+    """
+
+    QRCodeDetector = cv2.QRCodeDetector()
+    decodedText, points, _ = QRCodeDetector.detectAndDecode(image_data)
+
+    if points is not None:
+        # A QR code was found within the image
+        return True, decodedText
+    else:
+        return False, ""
+    

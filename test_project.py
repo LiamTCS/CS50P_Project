@@ -11,7 +11,7 @@ from project import *
 
 
 #from project import (QR_data, QR_sep_present, args_validation, gen_qr_pdf,
- #                    input_validation, pdf_2_image_list, sub_doc_pos)
+#                    input_validation, pdf_2_image_list, sub_doc_pos)
 
 
 
