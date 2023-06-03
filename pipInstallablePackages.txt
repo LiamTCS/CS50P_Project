@@ -1,0 +1,7 @@
+pathlib
+opencv-python-headless
+fpdf2
+qrcode
+PyMuPDF
+numpy
+Pillow
